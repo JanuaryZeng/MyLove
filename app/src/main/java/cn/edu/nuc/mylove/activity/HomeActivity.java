@@ -35,8 +35,6 @@ public class HomeActivity extends AppCompatActivity
     private FriendFragment friendFragment = null;
     private PencilFragment pencilFragment = null;
     private NoteFragment noteFragment = null;
-    private Fragment mCommonFragmentOne;
-    private Fragment mCurrent;
 
     private RelativeLayout home_layout;
     private RelativeLayout friend_layout;
@@ -108,8 +106,6 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -148,7 +144,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -183,7 +179,6 @@ public class HomeActivity extends AppCompatActivity
                         homeFragment = new HomeFragment();
                         fragmentTransaction.add(R.id.content_layout, homeFragment);
                     } else {
-                        mCurrent = homeFragment;
                         fragmentTransaction.show(homeFragment);
                     }
                     break;
@@ -201,8 +196,41 @@ public class HomeActivity extends AppCompatActivity
                         friendFragment = new FriendFragment();
                         fragmentTransaction.add(R.id.content_layout, friendFragment);
                     } else {
-                        mCurrent = friendFragment;
                         fragmentTransaction.show(friendFragment);
+                    }
+                    break;
+                case R.id.pencil_layout:
+                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home);
+                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend);
+                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
+                    tvPencilIcon.setBackgroundResource(R.drawable.icon_pencil_touch);
+                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note);
+
+                    hideFragment(homeFragment, fragmentTransaction);
+                    hideFragment(friendFragment, fragmentTransaction);
+                    hideFragment(noteFragment, fragmentTransaction);
+                    if (pencilFragment == null) {
+                        pencilFragment = new PencilFragment();
+                        fragmentTransaction.add(R.id.content_layout, pencilFragment);
+                    } else {
+                        fragmentTransaction.show(pencilFragment);
+                    }
+                    break;
+                case R.id.note_layout:
+                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home);
+                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend);
+                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
+                    tvPencilIcon.setBackgroundResource(R.drawable.icon_penci);
+                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note_touch);
+
+                    hideFragment(homeFragment, fragmentTransaction);
+                    hideFragment(pencilFragment, fragmentTransaction);
+                    hideFragment(friendFragment, fragmentTransaction);
+                    if (noteFragment == null) {
+                        noteFragment = new NoteFragment();
+                        fragmentTransaction.add(R.id.content_layout, noteFragment);
+                    } else {
+                        fragmentTransaction.show(noteFragment);
                     }
                     break;
             }
