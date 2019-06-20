@@ -1,25 +1,39 @@
 package cn.edu.nuc.mylove.activity;
 
-import android.net.sip.SipSession;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
-import android.widget.TextSwitcher;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import android.widget.TextView;
+
+
+import com.next.easynavigation.constant.Anim;
+import com.next.easynavigation.utils.NavigationUtil;
+import com.next.easynavigation.view.EasyNavigationBar;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.edu.nuc.fragment.FriendFragment;
 import cn.edu.nuc.fragment.HomeFragment;
@@ -30,68 +44,67 @@ import cn.edu.nuc.mylove.R;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FragmentManager fm;
-    private HomeFragment homeFragment = null;
-    private FriendFragment friendFragment = null;
-    private PencilFragment pencilFragment = null;
-    private NoteFragment noteFragment = null;
+    private EasyNavigationBar navigationBar;
+    private String[] tabText = {"首页", "记录", "", "目标", "记账"};
+    //未选中icon
+    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.icon_penci, R.mipmap.icon_note};
+    //选中时icon
+    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.add_image, R.mipmap.icon_pencil_touch, R.mipmap.icon_note_touch};
 
-    private RelativeLayout home_layout;
-    private RelativeLayout friend_layout;
-    private RelativeLayout add_layout;
-    private RelativeLayout pencil_layout;
-    private RelativeLayout note_layout;
+    private List<Fragment> fragments = new ArrayList<>();
 
-    private TextView tvHomeIcon;
-    private TextView tvFriendIcon;
-    private TextView tvAddIcon;
-    private TextView tvPencilIcon;
-    private TextView tvNoteIcon;
+
+    //仿微博图片和文字集合
+    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
+    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
+
+    private LinearLayout menuLayout;
+    private View cancelImageView;
+    private Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         init();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void init(){
-        myListener listener = new myListener();
-        home_layout = findViewById(R.id.home_layout);
-        home_layout.setOnClickListener(listener);
-        friend_layout = findViewById(R.id.friend_layout);
-        friend_layout.setOnClickListener(listener);
-        add_layout =  findViewById(R.id.add_layout);
-        add_layout.setOnClickListener(listener);
-        pencil_layout = findViewById(R.id.pencil_layout);
-        pencil_layout.setOnClickListener(listener);
-        note_layout = findViewById(R.id.note_layout);
-        note_layout.setOnClickListener(listener);
+        navigationBar = findViewById(R.id.navigationBar);
 
-        tvHomeIcon = findViewById(R.id.tvHomeIcon);
-        tvHomeIcon.setBackgroundResource(R.drawable.icon_home_touch);
-        tvFriendIcon = findViewById(R.id.tvFriendIcon);
-        tvAddIcon = findViewById(R.id.tvAddIcon);
-        tvPencilIcon = findViewById(R.id.tvPencilIcon);
-        tvNoteIcon = findViewById(R.id.tvNoteIcon);
+        fragments.add(new HomeFragment());
+        fragments.add(new FriendFragment());
+        fragments.add(new PencilFragment());
+        fragments.add(new NoteFragment());
 
-        homeFragment = new HomeFragment();//新建Home的activity
-        //添加默认要显示的Fragment
-        fm = getSupportFragmentManager();   //获取管理fragment的管理对象
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();//开始事务处理
-        fragmentTransaction.replace(R.id.content_layout, homeFragment);//等同于先remove在add,切换fragment
-        fragmentTransaction.commit();//执行切换的动作
+        navigationBar.titleItems(tabText)
+                .normalIconItems(normalIcon)
+                .selectIconItems(selectIcon)
+                .fragmentList(fragments)
+                .fragmentManager(getSupportFragmentManager())
+                .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
+                .addLayoutBottom(100)
+                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                    @Override
+                    public boolean onTabClickEvent(View view, int position) {
+                        if (position == 2) {
+                            //跳转页面（全民K歌）   或者   弹出菜单（微博）
+                            showMunu();
+                        }
+                        return false;
+                    }
+                })
+                .mode(EasyNavigationBar.MODE_ADD)
+                .anim(Anim.ZoomIn)
+                .build();
+
+
+        navigationBar.setAddViewLayout(createWeiboView());
+
     }
 
     @Override
@@ -111,12 +124,8 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -155,87 +164,167 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    class myListener implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            //处理切换Fragment逻辑
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            switch(v.getId()){
-                case R.id.home_layout:
-                    //设置点击UI会变
-                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home_touch);
-                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend);
-                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
-                    tvPencilIcon.setBackgroundResource(R.drawable.icon_penci);
-                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note);
-
-                    //隐藏其他fragment
-                    hideFragment(friendFragment, fragmentTransaction);
-                    hideFragment(pencilFragment, fragmentTransaction);
-                    hideFragment(noteFragment, fragmentTransaction);
-                    //将我们的HomeFragment显示出来,不为空则显示.为空创建显示
-                    if (homeFragment == null) {
-                        homeFragment = new HomeFragment();
-                        fragmentTransaction.add(R.id.content_layout, homeFragment);
-                    } else {
-                        fragmentTransaction.show(homeFragment);
-                    }
-                    break;
-                case R.id.friend_layout:
-                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home);
-                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend_touch);
-                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
-                    tvPencilIcon.setBackgroundResource(R.drawable.icon_penci);
-                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note);
-
-                    hideFragment(homeFragment, fragmentTransaction);
-                    hideFragment(pencilFragment, fragmentTransaction);
-                    hideFragment(noteFragment, fragmentTransaction);
-                    if (friendFragment == null) {
-                        friendFragment = new FriendFragment();
-                        fragmentTransaction.add(R.id.content_layout, friendFragment);
-                    } else {
-                        fragmentTransaction.show(friendFragment);
-                    }
-                    break;
-                case R.id.pencil_layout:
-                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home);
-                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend);
-                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
-                    tvPencilIcon.setBackgroundResource(R.drawable.icon_pencil_touch);
-                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note);
-
-                    hideFragment(homeFragment, fragmentTransaction);
-                    hideFragment(friendFragment, fragmentTransaction);
-                    hideFragment(noteFragment, fragmentTransaction);
-                    if (pencilFragment == null) {
-                        pencilFragment = new PencilFragment();
-                        fragmentTransaction.add(R.id.content_layout, pencilFragment);
-                    } else {
-                        fragmentTransaction.show(pencilFragment);
-                    }
-                    break;
-                case R.id.note_layout:
-                    tvHomeIcon.setBackgroundResource(R.drawable.icon_home);
-                    tvFriendIcon.setBackgroundResource(R.drawable.icon_friend);
-                    tvAddIcon.setBackgroundResource(R.drawable.icon_add);
-                    tvPencilIcon.setBackgroundResource(R.drawable.icon_penci);
-                    tvNoteIcon.setBackgroundResource(R.drawable.icon_note_touch);
-
-                    hideFragment(homeFragment, fragmentTransaction);
-                    hideFragment(pencilFragment, fragmentTransaction);
-                    hideFragment(friendFragment, fragmentTransaction);
-                    if (noteFragment == null) {
-                        noteFragment = new NoteFragment();
-                        fragmentTransaction.add(R.id.content_layout, noteFragment);
-                    } else {
-                        fragmentTransaction.show(noteFragment);
-                    }
-                    break;
+    /**
+     * EazyNavigation
+     */
+    private View createWeiboView() {
+        ViewGroup view = (ViewGroup) View.inflate(HomeActivity.this, R.layout.layout_add_view, null);
+        menuLayout = view.findViewById(R.id.icon_group);
+        cancelImageView = view.findViewById(R.id.cancel_iv);
+        cancelImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeAnimation();
             }
-            fragmentTransaction.commit();
+        });
+        for (int i = 0; i < 4; i++) {
+            View itemView = View.inflate(HomeActivity.this, R.layout.item_icon, null);
+            ImageView menuImage = itemView.findViewById(R.id.menu_icon_iv);
+            TextView menuText = itemView.findViewById(R.id.menu_text_tv);
+
+            menuImage.setImageResource(menuIconItems[i]);
+            menuText.setText(menuTextItems[i]);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            params.weight = 1;
+            itemView.setLayoutParams(params);
+            itemView.setVisibility(View.GONE);
+            menuLayout.addView(itemView);
+        }
+        return view;
+    }
+
+    //
+    private void showMunu() {
+        startAnimation();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //＋ 旋转动画
+                cancelImageView.animate().rotation(90).setDuration(400);
+            }
+        });
+        //菜单项弹出动画
+        for (int i = 0; i < menuLayout.getChildCount(); i++) {
+            final View child = menuLayout.getChildAt(i);
+            child.setVisibility(View.INVISIBLE);
+            mHandler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    child.setVisibility(View.VISIBLE);
+                    ValueAnimator fadeAnim = ObjectAnimator.ofFloat(child, "translationY", 600, 0);
+                    fadeAnim.setDuration(500);
+                    KickBackAnimator kickAnimator = new KickBackAnimator();
+                    kickAnimator.setDuration(500);
+                    fadeAnim.setEvaluator(kickAnimator);
+                    fadeAnim.start();
+                }
+            }, i * 50 + 100);
         }
     }
 
+
+    private void startAnimation() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //圆形扩展的动画
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        int x = NavigationUtil.getScreenWidth(HomeActivity.this) / 2;
+                        int y = (int) (NavigationUtil.getScreenHeith(HomeActivity.this) - NavigationUtil.dip2px(HomeActivity.this, 25));
+                        Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
+                                y, 0, navigationBar.getAddViewLayout().getHeight());
+                        animator.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                navigationBar.getAddViewLayout().setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                //							layout.setVisibility(View.VISIBLE);
+                            }
+                        });
+                        animator.setDuration(300);
+                        animator.start();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 关闭window动画
+     */
+    private void closeAnimation() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                cancelImageView.animate().rotation(0).setDuration(400);
+            }
+        });
+
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+                int x = NavigationUtil.getScreenWidth(this) / 2;
+                int y = (NavigationUtil.getScreenHeith(this) - NavigationUtil.dip2px(this, 25));
+                Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
+                        y, navigationBar.getAddViewLayout().getHeight(), 0);
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        //							layout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        navigationBar.getAddViewLayout().setVisibility(View.GONE);
+                        //dismiss();
+                    }
+                });
+                animator.setDuration(300);
+                animator.start();
+            }
+        } catch (Exception e) {
+        }
+    }
+
+
+    public EasyNavigationBar getNavigationBar() {
+        return navigationBar;
+
+    }
+    /**
+     * Eazy的类
+     */
+    private class KickBackAnimator implements TypeEvaluator<Float> {
+        private final float s = 1.70158f;
+        float mDuration = 0f;
+
+        public void setDuration(float duration) {
+            mDuration = duration;
+        }
+
+        public Float evaluate(float fraction, Float startValue, Float endValue) {
+            float t = mDuration * fraction;
+            float b = startValue.floatValue();
+            float c = endValue.floatValue() - startValue.floatValue();
+            float d = mDuration;
+            float result = calculate(t, b, c, d);
+            return result;
+        }
+
+        public Float calculate(float t, float b, float c, float d) {
+            return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+        }
+    }
 }
+
+
+

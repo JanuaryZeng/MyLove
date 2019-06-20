@@ -6,12 +6,12 @@
     android:orientation="vertical">
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="525dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="525dp">
+            android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp">
@@ -19,7 +19,7 @@
                     android:id="@+id/ivShouYeBeiJing"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    android:src="@drawable/lashou"
+                    android:src="@mipmap/lashou"
                     android:scaleType = "fitXY"/>
                 <LinearLayout
                     android:id="@+id/fragment_home_linear"
@@ -37,7 +37,7 @@
                             android:layout_width="75dp"
                             android:layout_height="75dp"
                             android:scaleType = "fitXY"
-                            android:src="@drawable/man"/>
+                            android:src="@mipmap/man"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -50,7 +50,7 @@
                             android:layout_width="75dp"
                             android:layout_height="75dp"
                             android:scaleType = "fitXY"
-                            android:src="@drawable/woman"
+                            android:src="@mipmap/woman"
                              />
                     </LinearLayout>
 
@@ -100,7 +100,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:scaleType = "fitXY"
-                            android:src="@drawable/right"/>
+                            android:src="@mipmap/right"/>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -121,7 +121,7 @@
                         <ImageView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:src="@drawable/alarm"
+                            android:src="@mipmap/alarm"
                             android:scaleType="fitXY"
                             android:layout_gravity="center_vertical"/>
                         <LinearLayout
@@ -179,7 +179,7 @@
                             android:layout_height="22dp"
                             android:layout_gravity="center_vertical"
                             android:scaleType = "fitXY"
-                            android:src="@drawable/right"/>
+                            android:src="@mipmap/right"/>
                     </LinearLayout>
 
 
@@ -201,7 +201,7 @@
                         <ImageView
                             android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:src="@drawable/rili"
+                            android:src="@mipmap/rili"
                             android:scaleType="fitXY"
                             android:layout_gravity="center_vertical"/>
                         <LinearLayout
