@@ -53,7 +53,7 @@ public class FirstTimeAdapter extends RecyclerView.Adapter<FirstTimeAdapter.View
         return firstTimeNotes.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView ivFirstTimeNote = null;
 

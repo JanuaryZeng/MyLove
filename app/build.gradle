@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "cn.edu.nuc.mylove"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -31,5 +31,6 @@ dependencies {
 
 
     implementation 'com.github.forvv231:EasyNavigation:1.0.3'
+    implementation 'com.github.assion:AssNineGridView:v1.0.2'
 
 }
