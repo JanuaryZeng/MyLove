@@ -164,7 +164,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="闹钟"
+                        android:text="纪念日"
                         android:textSize="20sp"
                         />
                     <LinearLayout

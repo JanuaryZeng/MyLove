@@ -41,7 +41,7 @@ import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.fragment.PencilFragment;
 import cn.edu.nuc.mylove.R;
 
-public class HomeActivity extends AppCompatActivity
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private EasyNavigationBar navigationBar;
