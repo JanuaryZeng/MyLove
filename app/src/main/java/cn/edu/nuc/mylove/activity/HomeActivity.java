@@ -5,12 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +38,8 @@ import com.next.easynavigation.view.EasyNavigationBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.edu.nuc.Adapter.FirstTimeAdapter;
+import cn.edu.nuc.DataBase.FirstTimeNote;
 import cn.edu.nuc.fragment.FriendFragment;
 import cn.edu.nuc.fragment.HomeFragment;
 import cn.edu.nuc.fragment.NoteFragment;
@@ -47,9 +52,9 @@ public class HomeActivity extends BaseActivity
     private EasyNavigationBar navigationBar;
     private String[] tabText = {"首页", "记录", "", "目标", "记账"};
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.icon_penci, R.mipmap.icon_note};
+    private int[] normalIcon = {R.mipmap.icon_home, R.mipmap.icon_friend, R.mipmap.add_image, R.mipmap.icon_penci, R.mipmap.icon_note};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.add_image, R.mipmap.icon_pencil_touch, R.mipmap.icon_note_touch};
+    private int[] selectIcon = {R.mipmap.icon_home_touch, R.mipmap.icon_friend_touch, R.mipmap.add_image, R.mipmap.icon_pencil_touch, R.mipmap.icon_note_touch};
 
     private List<Fragment> fragments = new ArrayList<>();
 
@@ -91,6 +96,7 @@ public class HomeActivity extends BaseActivity
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
+
                         if (position == 2) {
                             //跳转页面（全民K歌）   或者   弹出菜单（微博）
                             showMunu();

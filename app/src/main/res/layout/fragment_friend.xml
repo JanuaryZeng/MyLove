@@ -33,8 +33,15 @@
 
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/firstRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friendRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
 </LinearLayout>

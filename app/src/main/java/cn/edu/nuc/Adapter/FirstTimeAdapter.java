@@ -17,6 +17,10 @@ public class FirstTimeAdapter extends RecyclerView.Adapter<FirstTimeAdapter.View
 
     private List<FirstTimeNote> firstTimeNotes = null;
 
+    public FirstTimeAdapter(List<FirstTimeNote> firstTimeNotes) {
+        this.firstTimeNotes = firstTimeNotes;
+    }
+
     /**
      * 这个方法主要生成为每个Item inflater出一个View，但是该方法返回的是一个ViewHolder。
      * 该方法把View直接封装在ViewHolder中，然后我们面向的是ViewHolder这个实例，
