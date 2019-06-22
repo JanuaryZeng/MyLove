@@ -11,8 +11,8 @@
         >
             <RelativeLayout
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
-                android:layout_height="wrap_content"
                 android:minHeight="0dp"
+                android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent">
