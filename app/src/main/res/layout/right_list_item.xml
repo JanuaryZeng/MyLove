@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginRight="3dp"
+        android:gravity="center|right"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvMoneyRightTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.07"
+            android:gravity="bottom"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="2016-06-28 17:50" />
+        <TextView
+            android:id="@+id/tvMoneyRightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.09"
+            android:text="补课 +25"
+            android:gravity="bottom"
+            android:textSize="25sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <!-- 上下各画一根橙色的线条，线宽设置为2dp -->
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#D9DADC"/>
+
+        <!-- 设置中间的节点大小为20x20 -->
+
+        <View
+            android:id="@+id/crowBackground"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_shape"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#D9DADC" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/icon_add" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#D9DADC" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="3dp"
+        android:gravity="center|left"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvMoneyRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.07"
+            android:textSize="14sp"
+            android:gravity="bottom"
+            android:text="+15" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.09"
+            android:textSize="25sp"
+            android:gravity="bottom" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

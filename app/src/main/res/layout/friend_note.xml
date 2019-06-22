@@ -48,7 +48,7 @@
         <LinearLayout
             android:id="@+id/linear2"
             android:layout_below="@id/linear1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_alignLeft="@id/linear1">
@@ -56,7 +56,7 @@
             <com.assionhonty.lib.assninegridview.AssNineGridView
                 android:id="@+id/angv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 app:angv_gridSpace="3dp"
                 app:angv_maxSize="9"

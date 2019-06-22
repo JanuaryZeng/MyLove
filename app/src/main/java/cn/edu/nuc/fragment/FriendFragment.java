@@ -73,13 +73,11 @@ public class FriendFragment extends BaseFragment {
         List<String> photos4 = new ArrayList<String>();
 
 
-
         photos.add(IMGURL1);
         photos1.add(IMGURL1);
         photos2.add(IMGURL1);
         photos3.add(IMGURL1);
         photos4.add(IMGURL1);
-
 
 
         friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find),

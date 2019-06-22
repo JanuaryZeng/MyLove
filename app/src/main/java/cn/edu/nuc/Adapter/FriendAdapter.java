@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.assionhonty.lib.assninegridview.AssNineGridView;
 import com.assionhonty.lib.assninegridview.AssNineGridViewAdapter;
+import com.assionhonty.lib.assninegridview.AssNineGridViewClickAdapter;
 import com.assionhonty.lib.assninegridview.ImageInfo;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         FriendNote friendNote = friendNotes.get(position);
         List<ImageInfo> imageInfos = getImageInfos(position);
-        holder.angv.setAdapter(new AssNineGridViewAdapter(holder.itemView.getContext(),imageInfos));
+        holder.angv.setAdapter(new AssNineGridViewClickAdapter(holder.itemView.getContext(),imageInfos));
         holder.image2.setImageBitmap(friendNote.getIcon());
         holder.tvFriendName.setText(friendNote.getName());
         holder.tvFriendText.setText(friendNote.getText());

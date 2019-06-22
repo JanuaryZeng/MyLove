@@ -1,14 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ramotion.foldingcell.FoldingCell xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/foldingcell">
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                android:id="@+id/PencilUpCardView1"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="#cc6666"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:gravity="center">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/imPencilUpIocn1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@mipmap/woman"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvPencilUpName1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="吃火锅"
+                            android:textColor="#ffffff"
+                            android:textSize="20sp" />
+                        <TextView
+                            android:id="@+id/tvPencilUpText1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周五之前"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tvPencilUpYear1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2019"
+                            android:textColor="#ffffff"
+                            android:textSize="20sp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Year"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tvPencilUpMon1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6"
+                            android:textColor="#ffffff"
+                            android:textSize="20sp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Month"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tvPencilUpDay1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textColor="#ffffff"
+                            android:textSize="20sp"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Day"
+                            android:textColor="#ffffff"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edPencilUpMoney"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_weight="1"
+                        android:hint="输入金额"/>
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@mipmap/right"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="完成"
+                        android:paddingLeft="27dp"
+                        android:layout_weight="1"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/tvPencilDui"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@mipmap/icon_finish"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/PencilUpCardView"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -27,9 +208,10 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <ImageView
+                    android:id="@+id/imPencilUpIocn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@mipmap/woman"
+                    android:src="@mipmap/woman"
                     />
             </LinearLayout>
 
@@ -39,14 +221,16 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
+
                 <TextView
+                    android:id="@+id/tvPencilUpName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="吃火锅"
                     android:textColor="#ffffff"
-                    android:textSize="20sp"
-                    />
+                    android:textSize="20sp" />
                 <TextView
+                    android:id="@+id/tvPencilUpText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="周五之前"
@@ -62,6 +246,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/tvPencilUpYear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2019"
@@ -84,6 +269,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/tvPencilUpMon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
@@ -106,6 +292,7 @@
                 android:orientation="vertical"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/tvPencilUpDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
@@ -125,46 +312,6 @@
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="输入金额"/>
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@mipmap/right"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="完成"
-                    android:paddingLeft="27dp"
-                    android:layout_weight="1"
-                    />
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@mipmap/icon_finish"/>
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
 
 </com.ramotion.foldingcell.FoldingCell>

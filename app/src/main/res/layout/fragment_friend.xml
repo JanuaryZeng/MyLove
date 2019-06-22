@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:padding="15dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="甜蜜记录"
-            android:textSize="20sp"
-            />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            >
-
-            <ImageView
-                android:id="@+id/ivFriendRight"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="center_vertical"
-                android:scaleType = "fitXY"
-                android:src="@mipmap/right"/>
-        </LinearLayout>
-
-    </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/firstRecycler"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        >
+            <RelativeLayout
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:padding="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="甜蜜记录"
+                    android:textSize="20sp"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    >
+
+                    <ImageView
+                        android:id="@+id/ivFriendRight"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType = "fitXY"
+                        android:src="@mipmap/right"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:id="@+id/firstRecycler"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/friendRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"/>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

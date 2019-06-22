@@ -32,5 +32,7 @@ dependencies {
 
     implementation 'com.github.forvv231:EasyNavigation:1.0.3'
     implementation 'com.github.assion:AssNineGridView:v1.0.2'
+    implementation 'com.ramotion.foldingcell:folding-cell:1.2.2'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 
 }
