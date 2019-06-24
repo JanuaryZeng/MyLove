@@ -49,44 +49,41 @@ public class DBMoneyNote {
         Log.e("asd","*************************************");
         final String sql="select * from moneychangetable where loverid = ?";
         //获取链接数据库对象
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<MoneyNote> list=new ArrayList<MoneyNote>();
-                conn = DBOpenHelper.getConn();
-                if (conn == null)
-                    Log.e("asd", "********************");
-                try {
-                    if (conn != null && (!conn.isClosed())) {
-                        ps = (PreparedStatement) conn.prepareStatement(sql);
-                        if (ps != null) {
-                            ps.setInt(1, loverID);
-                            rs = ps.executeQuery();
-                            if (rs != null) {
-                                while (rs.next()) {
-                                    MoneyNote moneyNote = new MoneyNote();
-                                    moneyNote.setText(rs.getString("moneytypeid"));
-                                    Log.e("qwerty", "1233333333333333333333");
-                                    moneyNote.setTime(rs.getString("moneydate"));
-                                    moneyNote.setMoney(rs.getString("moneynumber"));
-                                    String sql1 = "select * from moneytypetable where moneynumber = ?";
-                                    PreparedStatement ps1 = conn.prepareStatement(sql1);
-                                    ps1.setString(1, rs.getString("moneytypeid"));
-                                    ResultSet rs1 = ps1.executeQuery();
-                                    rs1.next();
-                                    moneyNote.setIcon(rs1.getInt("moneytypeicon"));
-                                    moneyNote.setItemType(rs1.getInt("moneydirction"));
-                                    list.add(moneyNote);
-                                    DBOpenHelper.closeAll(conn,ps,rs);//关闭相关操作
-                                }
-                            }
+
+        List<MoneyNote> list=new ArrayList<MoneyNote>();
+        conn = DBOpenHelper.getConn();
+        if (conn == null)
+            Log.e("asd", "********************");
+        try {
+            if (conn != null && (!conn.isClosed())) {
+                ps = (PreparedStatement) conn.prepareStatement(sql);
+                if (ps != null) {
+                    ps.setInt(1, loverID);
+                    rs = ps.executeQuery();
+                    if (rs != null) {
+                        while (rs.next()) {
+                            MoneyNote moneyNote = new MoneyNote();
+                            moneyNote.setText(rs.getString("moneytypeid"));
+                            Log.e("qwerty", "1233333333333333333333");
+                            moneyNote.setTime(rs.getString("moneydate"));
+                            moneyNote.setMoney(rs.getString("moneynumber"));
+                            String sql1 = "select * from moneytypetable where moneynumber = ?";
+                            PreparedStatement ps1 = conn.prepareStatement(sql1);
+                            ps1.setString(1, rs.getString("moneytypeid"));
+                            ResultSet rs1 = ps1.executeQuery();
+                            rs1.next();
+                            moneyNote.setIcon(rs1.getInt("moneytypeicon"));
+                            moneyNote.setItemType(rs1.getInt("moneydirction"));
+                            list.add(moneyNote);
+                            DBOpenHelper.closeAll(conn,ps,rs);//关闭相关操作
                         }
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
                 }
             }
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
         return list;
     }
