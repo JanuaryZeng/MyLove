@@ -1,5 +1,7 @@
 package cn.edu.nuc.Adapter;
 
+import android.graphics.BitmapFactory;
+
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -27,12 +29,14 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
     protected void convert(BaseViewHolder helper, MoneyNote item) {
         switch(helper.getItemViewType()){
             case MoneyNote.LEFT:
-                helper.setText(R.id.tvMoneyLeftTime,item.getTime())
+                helper.setBackgroundRes(R.id.imMoneyLeft, item.getIcon())
+                        .setText(R.id.tvMoneyLeftTime,item.getTime())
                         .setText(R.id.tvMoneyLeft,item.getMoney())
                         .setText(R.id.tvMoneyLeftText,item.getText());
                 break;
             case MoneyNote.RIGHT:
-                helper.setText(R.id.tvMoneyRightTime,item.getTime())
+                helper.setBackgroundRes(R.id.imMoneyRight,item.getIcon())
+                        .setText(R.id.tvMoneyRightTime,item.getTime())
                         .setText(R.id.tvMoneyRight,item.getMoney())
                         .setText(R.id.tvMoneyRightText,item.getText());
                 break;

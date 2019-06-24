@@ -1,5 +1,7 @@
 package cn.edu.nuc.DataBase;
 
+import android.graphics.Bitmap;
+
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 public class MoneyNote implements MultiItemEntity {
@@ -7,19 +9,23 @@ public class MoneyNote implements MultiItemEntity {
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
 
-    private int itemType;
+    private int itemType = 0;
 
     //data
+    private int icon = -1;
     private String money = null;
     private String time = null;
     private String text = null;
+    public MoneyNote(){}
 
-    public MoneyNote(int itemType, String money, String time, String text) {
+    public MoneyNote(int itemType, int icon, String money, String time, String text) {
         this.itemType = itemType;
+        this.icon = icon;
         this.money = money;
         this.time = time;
         this.text = text;
     }
+
 
     public static int getLEFT() {
         return LEFT;
@@ -61,5 +67,13 @@ public class MoneyNote implements MultiItemEntity {
     @Override
     public int getItemType() {
         return itemType;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }
