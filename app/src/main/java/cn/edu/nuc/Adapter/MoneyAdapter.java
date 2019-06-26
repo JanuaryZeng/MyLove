@@ -1,6 +1,7 @@
 package cn.edu.nuc.Adapter;
 
 import android.graphics.BitmapFactory;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -32,7 +33,13 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                 helper.setBackgroundRes(R.id.imMoneyLeft, item.getIcon())
                         .setText(R.id.tvMoneyLeftTime,item.getTime())
                         .setText(R.id.tvMoneyLeft,item.getMoney())
-                        .setText(R.id.tvMoneyLeftText,item.getText());
+                        .setText(R.id.tvMoneyLeftText,item.getText())
+                        .setOnClickListener(R.id.tvMoneyLeftText, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        });
                 break;
             case MoneyNote.RIGHT:
                 helper.setBackgroundRes(R.id.imMoneyRight,item.getIcon())

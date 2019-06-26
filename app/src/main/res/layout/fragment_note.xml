@@ -64,6 +64,7 @@
             </LinearLayout>
         </LinearLayout>
         <ImageView
+            android:id="@+id/imJiYiBi"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
             android:minHeight="0dp"
             android:layout_width="match_parent"

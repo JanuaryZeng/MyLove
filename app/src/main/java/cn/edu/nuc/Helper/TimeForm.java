@@ -11,7 +11,7 @@ public class TimeForm {
 
 
     public static String getNowTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String str_time = sdf.format(dt);
         return str_time;
     }

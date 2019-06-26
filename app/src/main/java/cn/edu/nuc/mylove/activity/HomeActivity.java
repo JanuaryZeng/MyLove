@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,11 +43,15 @@ import java.util.List;
 
 import cn.edu.nuc.Adapter.FirstTimeAdapter;
 import cn.edu.nuc.DataBase.FirstTimeNote;
+import cn.edu.nuc.Helper.IDHelper;
+import cn.edu.nuc.Helper.MoneyTypeTable;
 import cn.edu.nuc.fragment.FriendFragment;
 import cn.edu.nuc.fragment.HomeFragment;
 import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.fragment.PencilFragment;
 import cn.edu.nuc.mylove.R;
+
+import static cn.edu.nuc.Helper.IDHelper.loverID;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,6 +79,16 @@ public class HomeActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
+        if(sp.contains("loverid")){
+            loverID = sp.getString("loverid",null);
+        }else{
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+
         init();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -79,6 +96,12 @@ public class HomeActivity extends BaseActivity
     }
 
     private void init(){
+
+        //加载数据
+
+        MoneyTypeTable.init();
+
+        //显示底部导航栏
         navigationBar = findViewById(R.id.navigationBar);
 
         fragments.add(new HomeFragment());
@@ -151,8 +174,19 @@ public class HomeActivity extends BaseActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(HomeActivity.this, RegisterActivity.class);
+            startActivity(intent);
 
+        } else if (id == R.id.nav_manage) {
+            loverID = null;
+            SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("loverid", null);
+            editor.putString("password", null);
+            editor.commit();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

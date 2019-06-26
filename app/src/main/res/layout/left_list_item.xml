@@ -71,8 +71,7 @@
         <ImageView
             android:id="@+id/imMoneyLeft"
             android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@mipmap/icon_add" />
+            android:layout_height="25dp"/>
 
         <View
             android:layout_width="2dp"
