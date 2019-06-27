@@ -48,6 +48,7 @@
                 android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/ivPenNote"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:src="@mipmap/icon_finish"

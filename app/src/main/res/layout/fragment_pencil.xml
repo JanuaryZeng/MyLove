@@ -29,6 +29,7 @@
                     android:text="消费"
                     android:textSize="15sp"/>
                 <TextView
+                    android:id="@+id/tvPenXiao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -57,6 +58,7 @@
                     android:text="代办"
                     android:textSize="15sp"/>
                 <TextView
+                    android:id="@+id/tvPenDai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -85,6 +87,7 @@
                     android:text="完成"
                     android:textSize="15sp"/>
                 <TextView
+                    android:id="@+id/tvPenWan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -110,9 +113,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="类别"
+                    android:text="统计"
                     android:textSize="15sp"/>
                 <TextView
+                    android:id="@+id/tvPenTong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"

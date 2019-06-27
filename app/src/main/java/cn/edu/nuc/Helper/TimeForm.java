@@ -1,5 +1,7 @@
 package cn.edu.nuc.Helper;
 
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,8 +15,28 @@ public class TimeForm {
     public static String getNowTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String str_time = sdf.format(dt);
+
         return str_time;
     }
+
+    public static String getNowNoMinTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String str_time = sdf.format(dt);
+        return str_time;
+    }
+
+    public static Date getDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date d = null;
+        String str_time = sdf.format(dt);
+        try {
+            d = sdf.parse(str_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
     public static String getYear(){
         return String.valueOf(cal.get(Calendar.YEAR));
     }

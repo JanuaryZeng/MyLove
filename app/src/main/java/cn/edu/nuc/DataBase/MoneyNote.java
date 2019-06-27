@@ -16,6 +16,7 @@ public class MoneyNote implements MultiItemEntity {
     private String money = null;
     private String time = null;
     private String text = null;
+    private int id = 0;
     public MoneyNote(){}
 
     public MoneyNote(int itemType, int icon, String money, String time, String text) {
@@ -63,6 +64,13 @@ public class MoneyNote implements MultiItemEntity {
         this.text = text;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public int getItemType() {

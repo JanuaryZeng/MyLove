@@ -9,7 +9,8 @@ public class PencilNote implements MultiItemEntity {
     public static final int Down = 2;
     public static final int TYPE = 3;
     private int itemType;
-    private Bitmap icon = null;
+    private String date = null;
+    private int icon = -1;
     private String name = null;
     private String text = null;
     private String type = null;
@@ -19,14 +20,18 @@ public class PencilNote implements MultiItemEntity {
     private int month = 0;
     private int day = 0;
 
-    public PencilNote(int itemType, Bitmap icon, String name, String text) {
+    private int id = -1;
+
+    public PencilNote(){}
+
+    public PencilNote(int itemType, int icon, String name, String text) {
         this.itemType = itemType;
         this.icon = icon;
         this.name = name;
         this.text = text;
     }
 
-    public PencilNote(int itemType, Bitmap icon, String name, String text, float money, int year, int month, int day) {
+    public PencilNote(int itemType, int icon, String name, String text, float money, int year, int month, int day) {
         this.itemType = itemType;
         this.icon = icon;
         this.name = name;
@@ -56,11 +61,11 @@ public class PencilNote implements MultiItemEntity {
         this.itemType = itemType;
     }
 
-    public Bitmap getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(Bitmap icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 
@@ -132,5 +137,21 @@ public class PencilNote implements MultiItemEntity {
 
     public void setTypeNum(int typeNum) {
         this.typeNum = typeNum;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

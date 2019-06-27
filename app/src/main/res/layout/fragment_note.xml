@@ -3,80 +3,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <TextView
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
-            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="0dp"
             android:textSize="20sp"
-            android:gravity="center" />
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
+
         <TextView
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
-            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="0dp"
             android:text="2月"
             android:textSize="30sp"
-            android:gravity="center" />
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
+
         <LinearLayout
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
-            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:minHeight="0dp"
+            android:orientation="horizontal"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
+
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="支出"/>
+                    android:text="支出" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2000.30"/>
+                    android:text="2000.30" />
             </LinearLayout>
+
             <LinearLayout
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收入"/>
+                    android:text="收入" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3000.30"/>
+                    android:text="3000.30" />
             </LinearLayout>
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imJiYiBi"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
-            android:minHeight="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/jiyibi"
-            />
-        <View
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap"
             android:minHeight="0dp"
+            android:src="@drawable/jiyibi"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
+
+        <View
             android:layout_width="2dp"
             android:layout_height="80dp"
-            android:background="#D9DADC"/>
+            android:background="#D9DADC"
+            android:minHeight="0dp"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -85,5 +97,16 @@
         android:id="@+id/moneyRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@+id/moneyRecycler"
+        app:layout_anchorGravity="right|top"
+
+        app:srcCompat="@android:drawable/ic_menu_rotate" />
 
 </android.support.design.widget.CoordinatorLayout>

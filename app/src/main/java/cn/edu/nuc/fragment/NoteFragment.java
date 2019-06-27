@@ -6,7 +6,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,7 +43,11 @@ public class NoteFragment extends BaseFragment {
     private  List<MoneyNote> list = new ArrayList<MoneyNote>();
     private MoneyAdapter moneyAdapter;
     private LinearLayoutManager layoutManager;
-    RecyclerView moneyRecycler;
+    private RecyclerView moneyRecycler;
+    private FloatingActionButton fab = null;
+
+    private Handler handler = null;
+
     View view = null;
 
     private ImageView imJiYiBi = null;
@@ -50,12 +57,15 @@ public class NoteFragment extends BaseFragment {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_note, container, false);
         viewInit(view);
+
         return view;
         }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -63,17 +73,11 @@ public class NoteFragment extends BaseFragment {
         super.onStart();
     }
 
+    @SuppressLint("HandlerLeak")
     private void viewInit(View view){
-        Bundle bundle = new Bundle();
         moneyRecycler = view.findViewById(R.id.moneyRecycler);
-        @SuppressLint("HandlerLeak") Handler handler = new Handler() {
+        handler = new Handler() {
             public void handleMessage(Message msg) {
-//                延时
-                try
-                        {
-                        Thread.currentThread().sleep(1000);//毫秒
-                        }
-                        catch(Exception e){}
                 switch (msg.what) {
                     case 3:
                         List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
@@ -82,22 +86,25 @@ public class NoteFragment extends BaseFragment {
 //                        Log.e("123456", String.valueOf(maps.size()));
                         for(Map<String, String> map : maps){
                             MoneyNote moneyNote = new MoneyNote();
+                            moneyNote.setId(Integer.valueOf(map.get("moneychangeid")));
                             moneyNote.setTime(map.get("moneydate"));
                             String montyid = map.get("moneytypeid");
                             int icon = 0;
                             if(MoneyTypeTable.getLeftMap().containsKey(montyid)){
                                 icon = Integer.valueOf(MoneyTypeTable.getLeftMap().get(montyid));
-                                moneyNote.setText(montyid+" -"+map.get("moneynumber"));
+                                moneyNote.setText(montyid+" "+map.get("moneynumber"));
                                 moneyNote.setItemType(1);
                                 moneyNote.setIcon(icon);
+                                moneyNote.setMoney("-"+map.get("moneynumber"));
                             }
                             else if(MoneyTypeTable.getRightMap().containsKey(montyid)){
                                 Log.e("123456","---------" +
                                         MoneyTypeTable.getRightMap().get(montyid));
                                 icon = Integer.valueOf(MoneyTypeTable.getRightMap().get(montyid));
-                                moneyNote.setText(montyid+" +"+map.get("moneynumber"));
+                                moneyNote.setText(montyid+" "+map.get("moneynumber"));
                                 moneyNote.setItemType(2);
                                 moneyNote.setIcon(icon);
+                                moneyNote.setMoney("+"+map.get("moneynumber"));
                             }else{
                                 moneyNote.setItemType(1);
                                 moneyNote.setIcon(R.mipmap.icon_friend);
@@ -149,10 +156,32 @@ public class NoteFragment extends BaseFragment {
             }
         });
 
-        }
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list.clear();
+                AsyncHttpClient client = new AsyncHttpClient();
+                RequestParams params = new RequestParams();
+                params.put("table","moneychangetable");
+                params.put("method", "_GET");
+                params.put("loverid", "jan");
+                client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
+            }
+        });
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        list.clear();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("table","moneychangetable");
+        params.put("method", "_GET");
+        params.put("loverid", "jan");
+        client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
     }
+
 }
