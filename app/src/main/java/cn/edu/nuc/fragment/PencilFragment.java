@@ -41,33 +41,33 @@ import cn.edu.nuc.mylove.R;
 
 public class PencilFragment extends BaseFragment {
 
-    private  List<PencilNote> list = new ArrayList<PencilNote>();
-    private PencilAdapter pencilAdapter;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView pencilRecycler;
-    private TextView tvPenXiao = null;
-    private TextView tvPenDai = null;
-    private TextView tvPenWan = null;
-    private TextView tvPenTong = null;
+    private static  List<PencilNote> list = new ArrayList<PencilNote>();
+    private static PencilAdapter pencilAdapter;
+    private static LinearLayoutManager layoutManager;
+    private static RecyclerView pencilRecycler;
+    private static TextView tvPenXiao = null;
+    private static TextView tvPenDai = null;
+    private static TextView tvPenWan = null;
+    private static TextView tvPenTong = null;
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private static Handler handler = new Handler(){
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 3:
+                    list.clear();
                     List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
                     int xiaofei = 0;
                     int daiban = 0;
+                    int finish = 0;
                     for(Map<String, String> map : maps){
                         int notestatus = Integer.valueOf(map.get("notestatus"));
                         if(notestatus == 1) {
                             xiaofei++;
-                        }
-                    }
-                    for(Map<String, String> map : maps){
-                        int notestatus = Integer.valueOf(map.get("notestatus"));
-                        if(notestatus == 2) {
+                        }else if(notestatus == 2){
                             daiban++;
+                        }else if(notestatus == 4){
+                            finish++;
                         }
                     }
                     PencilNote pencilNote1 = new PencilNote();
@@ -90,7 +90,7 @@ public class PencilFragment extends BaseFragment {
                             int Year = Integer.valueOf(strs[0]);
                             int Month = Integer.valueOf(strs[1]);
                             int Day = Integer.valueOf(strs[2]);
-                            int icon = Integer.valueOf(MoneyTypeTable.getAllMonMap().get(moneytypeid));
+                            int icon = Integer.valueOf(MoneyTypeTable.getAllMonMap().get(moneytypeid))+1;
 
                             pencilNote.setDay(Day);
                             pencilNote.setMonth(Month);
@@ -121,25 +121,68 @@ public class PencilFragment extends BaseFragment {
                             String moneytypeid = map.get("moneytypeid");
                             String notedate = map.get("notedate");
                             String notetext = map.get("notetext");
-                            String[] strs = notedate.split("-");
-                            int Year = Integer.valueOf(strs[0]);
-                            int Month = Integer.valueOf(strs[1]);
-                            int Day = Integer.valueOf(strs[2]);
+//                            String[] strs = notedate.split("-");
+//                            int Year = Integer.valueOf(strs[0]);
+//                            int Month = Integer.valueOf(strs[1]);
+//                            int Day = Integer.valueOf(strs[2]);
                             int icon = Integer.valueOf(MoneyTypeTable.getAllNoteMap().get(moneytypeid));
 
-                            pencilNote.setDay(Day);
-                            pencilNote.setMonth(Month);
-                            pencilNote.setYear(Year);
+//                            pencilNote.setDay(Day);
+//                            pencilNote.setMonth(Month);
+//                            pencilNote.setYear(Year);
                             pencilNote.setId(noteid);
                             pencilNote.setItemType(notestatus);
                             pencilNote.setName(notetext);
                             pencilNote.setText(moneytypeid);
                             pencilNote.setIcon(icon);
+                            pencilNote.setDate(notedate);
 
                             list.add(pencilNote);
                         }
                     }
+                    PencilNote pencilNote3 = new PencilNote();
+                    pencilNote3.setItemType(PencilNote.TYPE);
+                    pencilNote3.setTypeNum(finish);
+                    pencilNote3.setType("已完成");
+                    tvPenDai.setText(String.valueOf(daiban));
+                    tvPenWan.setText(String.valueOf(finish));
+                    tvPenTong.setText(String.valueOf(daiban+xiaofei+finish));
 
+                    list.add(pencilNote3);
+
+                    for(Map<String, String> map : maps){
+                        PencilNote pencilNote = new PencilNote();
+                        int notestatus = Integer.valueOf(map.get("notestatus"));
+                        if(notestatus == 4) {
+                            int noteid = Integer.valueOf(map.get("noteid"));
+                            String moneytypeid = map.get("moneytypeid");
+                            String notedate = map.get("notedate");
+                            String notetext = map.get("notetext");
+//                            String[] strs = notedate.split("-");
+//                            int Year = Integer.valueOf(strs[0]);
+//                            int Month = Integer.valueOf(strs[1]);
+//                            int Day = Integer.valueOf(strs[2]);
+                            int icon = 0;
+                            if(MoneyTypeTable.getAllNoteMap().containsKey(moneytypeid))
+                                icon = Integer.valueOf(MoneyTypeTable.getAllNoteMap().get(moneytypeid));
+                            else if(MoneyTypeTable.getAllMonMap().containsKey(moneytypeid))
+                                icon = Integer.valueOf(MoneyTypeTable.getAllMonMap().get(moneytypeid));
+//                            pencilNote.setDay(Day);
+//                            pencilNote.setMonth(Month);
+//                            pencilNote.setYear(Year);
+                            pencilNote.setId(noteid);
+                            pencilNote.setItemType(notestatus);
+                            pencilNote.setName(notetext);
+                            pencilNote.setText(moneytypeid);
+                            pencilNote.setIcon(icon);
+                            pencilNote.setDate(notedate);
+
+                            list.add(pencilNote);
+                        }
+                    }
+                    PencilNote pencilNote4 = new PencilNote();
+                    pencilNote4.setItemType(PencilNote.Blank);
+                    list.add(pencilNote4);
                     pencilRecycler.setLayoutManager(layoutManager);
 
                     pencilAdapter = new PencilAdapter(list);
@@ -195,15 +238,23 @@ public class PencilFragment extends BaseFragment {
         tvPenDai = view.findViewById(R.id.tvPenDai);
         tvPenWan = view.findViewById(R.id.tvPenWan);
         tvPenTong = view.findViewById(R.id.tvPenTong);
+        setRecycer();
+
+    }
+
+    public static void setRecycer(){
+        list.clear();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("table","notetable");
         params.put("method", "_GET");
         params.put("loverid", "jan");
+        try {
+            Thread.currentThread().sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
-
-
-
     }
 
 }

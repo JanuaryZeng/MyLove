@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.next.easynavigation.constant.Anim;
@@ -51,6 +52,7 @@ import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.fragment.PencilFragment;
 import cn.edu.nuc.mylove.R;
 
+import static cn.edu.nuc.Helper.IDHelper.date;
 import static cn.edu.nuc.Helper.IDHelper.loverID;
 
 public class HomeActivity extends BaseActivity
@@ -68,7 +70,7 @@ public class HomeActivity extends BaseActivity
 
     //仿微博图片和文字集合
     private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
-    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
+    private String[] menuTextItems = {"动态", "first", "消费", "记账"};
 
     private LinearLayout menuLayout;
     private View cancelImageView;
@@ -80,11 +82,14 @@ public class HomeActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
         if(sp.contains("loverid")){
-            loverID = sp.getString("loverid",null);
+            IDHelper.loverID = sp.getString("loverid",null);
+            IDHelper.init();
         }else{
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
 
@@ -220,7 +225,28 @@ public class HomeActivity extends BaseActivity
         for (int i = 0; i < 4; i++) {
             View itemView = View.inflate(HomeActivity.this, R.layout.item_icon, null);
             ImageView menuImage = itemView.findViewById(R.id.menu_icon_iv);
-            TextView menuText = itemView.findViewById(R.id.menu_text_tv);
+            final TextView menuText = itemView.findViewById(R.id.menu_text_tv);
+
+            menuImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String str = (String) menuText.getText();
+                    switch(str){
+                        case "动态":
+                            break;
+                        case "消费":
+                            Intent intent = new Intent(HomeActivity.this,SpendActivity.class);
+                            startActivity(intent);
+                            break;
+                        case "first":
+                            break;
+                        case "记账":
+                            Intent intent1 = new Intent(HomeActivity.this,AddMoneyActivity.class);
+                            startActivity(intent1);
+                            break;
+                    }
+                }
+            });
 
             menuImage.setImageResource(menuIconItems[i]);
             menuText.setText(menuTextItems[i]);

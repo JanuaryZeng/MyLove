@@ -34,12 +34,20 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
     private int moneychangeid = 0;
     private String moneydate = null;
 
+    private float old = (float) 0.0;
+    private float newable = (float) 0.0;
+
+    private int oldDir = 0;
+    private int newDir = 0;
+
+    float in = (float) 0.0;
+    float out = (float)0.0;
+
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 2:
-                    Toast.makeText(UpdateMoneyActivity.this, "修改成功", Toast.LENGTH_LONG).show();//信息框
                     NoteFragment noteFragment = new NoteFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("moneychangeid", String.valueOf(moneychangeid));
@@ -47,11 +55,19 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
                     bundle.putString("moneynumber", String.valueOf(etUpdateMon.getText()));
                     bundle.putString("moneytypeid",spUpdateMon.getSelectedItem().toString());
                     noteFragment.setArguments(bundle);
-
-                    finish();
                     break;
                 case 20:
                     Toast.makeText(UpdateMoneyActivity.this, "服务器错误", Toast.LENGTH_LONG).show();//信息框
+                    break;
+                case 3:
+                    IDHelper.moneyin = in;
+                    IDHelper.moneyout = out;
+
+                    Toast.makeText(UpdateMoneyActivity.this, "更新成功", Toast.LENGTH_LONG).show();//信息框
+                    finish();
+                    NoteFragment.setReyeler();
+                    break;
+                case 30:
                     break;
             }
             super.handleMessage(msg);
@@ -74,6 +90,8 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
         etUpdateMon = findViewById(R.id.etUpdateMon);
         spUpdateMon = findViewById(R.id.spUpdateMon);
         etUpdateMon.setText(str[1]);
+        old = Float.valueOf(str[1]);
+        oldDir = IDHelper.dir;
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, MoneyTypeTable.getIds());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spUpdateMon.setSelection(MoneyTypeTable.getId().indexOf(str[0]));
@@ -100,13 +118,54 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
                 params.put("moneydate",moneydate);
                 params.put("moneynumber",etUpdateMon.getText());
                 params.put("moneytypeid",spUpdateMon.getSelectedItem().toString());
-
+                newable = Float.valueOf(String.valueOf(etUpdateMon.getText()));
+                newDir = Integer.valueOf(IDHelper.map.get(spUpdateMon.getSelectedItem().toString()));
                 Log.e("789654", String.valueOf(moneychangeid));
                 Log.e("789654",moneydate);
                 Log.e("789654", String.valueOf(etUpdateMon.getText()));
                 Log.e("789654",spUpdateMon.getSelectedItem().toString());
-
                 client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(this.handler, 2, 20));
+
+                RequestParams params1 = new RequestParams();
+                params1.put("table","lovertable");
+                params1.put("method", "_PUT");
+                params1.put("loverid", "jan");
+                params1.put("loverdate", IDHelper.date);
+                params1.put("loverpassword", IDHelper.password);
+
+
+                Log.e("yaoyao", "oldDir :"+oldDir);
+                Log.e("yaoyao", "newDir :"+newDir);
+                Log.e("yaoyao", "IDHelper.monein :"+IDHelper.moneyin);
+                Log.e("yaoyao", "IDHelper.moneyout :"+IDHelper.moneyout);
+                Log.e("yaoyao", "newable :"+newable);
+                Log.e("yaoyao", "old :"+old);
+                if(oldDir == 1){
+                    if(newDir == 1){
+                        in = newable - old + IDHelper.moneyin;
+                        out = IDHelper.moneyout;
+                    }else if(newDir == 2){
+                        in = IDHelper.moneyin - old;
+                        out = IDHelper.moneyout + newable;
+                    }
+                }else if(oldDir == 2){
+                    if(newDir == 1){
+                        in = IDHelper.moneyin + newable;
+                        out = IDHelper.moneyout - old;
+                    }else if(newDir == 2){
+                        in = IDHelper.moneyin;
+                        out = newable - old + IDHelper.moneyout;
+                    }
+                }
+                params1.put("moneyout", out);
+                params1.put("moneyin", in);
+                Log.e("yaoyao", "out :"+String.valueOf(out));
+                Log.e("yaoyao", "in :"+String.valueOf(in));
+                Log.e("yaoyao", "date :"+IDHelper.date);
+                Log.e("yaoyao", "password :"+IDHelper.password);
+
+
+                client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(this.handler, 3, 30));
                 break;
             case R.id.btndateMon2:
                 finish();

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,15 +39,88 @@ import cn.edu.nuc.Helper.MoneyTypeTable;
 import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
 import cn.edu.nuc.mylove.activity.AddMoneyActivity;
+import cn.edu.nuc.mylove.activity.UpdateMoneyActivity;
+
+import static android.view.View.INVISIBLE;
 
 public class NoteFragment extends BaseFragment {
-    private  List<MoneyNote> list = new ArrayList<MoneyNote>();
-    private MoneyAdapter moneyAdapter;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView moneyRecycler;
-    private FloatingActionButton fab = null;
+    private static List<MoneyNote> list = new ArrayList<MoneyNote>();
+    private static MoneyAdapter moneyAdapter;
+    private static LinearLayoutManager layoutManager;
+    private static RecyclerView moneyRecycler;
+    private static FloatingActionButton fab = null;
+    private static TextView zhichu = null;
+    private static TextView shouru = null;
 
-    private Handler handler = null;
+
+    @SuppressLint("HandlerLeak")
+    private static Handler handler =new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 3:
+                    list.clear();
+                    List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
+//                        Log.e("123456", msg.obj.toString());
+//                        Log.e("123456", String.valueOf(maps.size()));
+                    for(Map<String, String> map : maps){
+                        MoneyNote moneyNote = new MoneyNote();
+                        moneyNote.setId(Integer.valueOf(map.get("moneychangeid")));
+                        moneyNote.setTime(map.get("moneydate"));
+                        String montyid = map.get("moneytypeid");
+                        int icon = 0;
+                        if(MoneyTypeTable.getLeftMap().containsKey(montyid)){
+                            icon = Integer.valueOf(MoneyTypeTable.getLeftMap().get(montyid));
+                            moneyNote.setText(montyid+" "+map.get("moneynumber"));
+                            moneyNote.setItemType(1);
+                            moneyNote.setIcon(icon);
+                            moneyNote.setMoney("-"+map.get("moneynumber"));
+                        }
+                        else if(MoneyTypeTable.getRightMap().containsKey(montyid)){
+                            Log.e("123456","---------" +
+                                    MoneyTypeTable.getRightMap().get(montyid));
+                            icon = Integer.valueOf(MoneyTypeTable.getRightMap().get(montyid));
+                            moneyNote.setText(montyid+" "+map.get("moneynumber"));
+                            moneyNote.setItemType(2);
+                            moneyNote.setIcon(icon);
+                            moneyNote.setMoney("+"+map.get("moneynumber"));
+                        }else{
+                            moneyNote.setItemType(1);
+                            moneyNote.setIcon(R.mipmap.icon_friend);
+                        }
+//                            Log.e("123456",map.get("moneydate"));
+//                            Log.e("123456",map.get("moneytypeid"));
+//                            Log.e("123456",map.get("moneynumber"));
+                        list.add(moneyNote);
+                    }
+                    Collections.reverse(list);
+                    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                    moneyRecycler.setLayoutManager(layoutManager);
+                    moneyAdapter = new MoneyAdapter(list);
+                    moneyRecycler.setAdapter(moneyAdapter);
+                    Log.e("123456","正确！！！");
+                    break;
+                case 30:
+                    Log.e("123456","错误！！！");
+                    break;
+                case 2:
+                    Map mapper = JSONTOOL.analyze_once_json(msg.obj.toString());
+
+                    IDHelper.moneyin = Float.valueOf((String) mapper.get("moneyin"));
+                    IDHelper.moneyout = Float.valueOf((String)mapper.get("moneyout"));
+
+//                    Log.e("notefra", "in :"+mapper);
+//                    Log.e("notefra", "in :"+mapper.get("moneyin"));
+//                    Log.e("notefra", "out :"+mapper.get("moneyin"));
+
+                    shouru.setText(String.valueOf(IDHelper.moneyin));
+                    zhichu.setText(String.valueOf(IDHelper.moneyout));
+                    break;
+                case 20:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     View view = null;
 
@@ -57,7 +131,6 @@ public class NoteFragment extends BaseFragment {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_note, container, false);
         viewInit(view);
-
         return view;
         }
 
@@ -76,65 +149,7 @@ public class NoteFragment extends BaseFragment {
     @SuppressLint("HandlerLeak")
     private void viewInit(View view){
         moneyRecycler = view.findViewById(R.id.moneyRecycler);
-        handler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 3:
-                        List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
-//                        Log.e("123456", msg.obj.toString());
-//
-//                        Log.e("123456", String.valueOf(maps.size()));
-                        for(Map<String, String> map : maps){
-                            MoneyNote moneyNote = new MoneyNote();
-                            moneyNote.setId(Integer.valueOf(map.get("moneychangeid")));
-                            moneyNote.setTime(map.get("moneydate"));
-                            String montyid = map.get("moneytypeid");
-                            int icon = 0;
-                            if(MoneyTypeTable.getLeftMap().containsKey(montyid)){
-                                icon = Integer.valueOf(MoneyTypeTable.getLeftMap().get(montyid));
-                                moneyNote.setText(montyid+" "+map.get("moneynumber"));
-                                moneyNote.setItemType(1);
-                                moneyNote.setIcon(icon);
-                                moneyNote.setMoney("-"+map.get("moneynumber"));
-                            }
-                            else if(MoneyTypeTable.getRightMap().containsKey(montyid)){
-                                Log.e("123456","---------" +
-                                        MoneyTypeTable.getRightMap().get(montyid));
-                                icon = Integer.valueOf(MoneyTypeTable.getRightMap().get(montyid));
-                                moneyNote.setText(montyid+" "+map.get("moneynumber"));
-                                moneyNote.setItemType(2);
-                                moneyNote.setIcon(icon);
-                                moneyNote.setMoney("+"+map.get("moneynumber"));
-                            }else{
-                                moneyNote.setItemType(1);
-                                moneyNote.setIcon(R.mipmap.icon_friend);
-                            }
-//                            Log.e("123456",map.get("moneydate"));
-//                            Log.e("123456",map.get("moneytypeid"));
-//                            Log.e("123456",map.get("moneynumber"));
-                            list.add(moneyNote);
-                        }
-                        Collections.reverse(list);
-                        layoutManager = new LinearLayoutManager(getContext());
-                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        moneyRecycler.setLayoutManager(layoutManager);
-                        moneyAdapter = new MoneyAdapter(list);
-                        moneyRecycler.setAdapter(moneyAdapter);
-                        Log.e("123456","正确！！！");
-                        break;
-                    case 30:
-                        Log.e("123456","错误！！！");
-                        break;
-                }
-                super.handleMessage(msg);
-            }
-        };
-            AsyncHttpClient client = new AsyncHttpClient();
-            RequestParams params = new RequestParams();
-            params.put("table","moneychangetable");
-            params.put("method", "_GET");
-            params.put("loverid", "jan");
-            client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
+        layoutManager = new LinearLayoutManager(getContext());
 // MoneyNote(int itemType, String money, String time, String text
 //            list.add(new MoneyNote(2, R.mipmap.icon_add_touch,
 //                    "+10","2019-06-28","工作 10.0"));
@@ -146,7 +161,9 @@ public class NoteFragment extends BaseFragment {
 //                    "-30","2019-06-28","停车 -30.0"));
 //            list.add(new MoneyNote(2,R.mipmap.icon_add_touch,
 //                    "+10","2019-06-28","打工 10.0"));
-
+        zhichu = view.findViewById(R.id.zhichu);
+        shouru = view.findViewById(R.id.shouru);
+        setReyeler();
         imJiYiBi = view.findViewById(R.id.imJiYiBi);
         imJiYiBi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,16 +174,11 @@ public class NoteFragment extends BaseFragment {
         });
 
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setVisibility(INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                list.clear();
-                AsyncHttpClient client = new AsyncHttpClient();
-                RequestParams params = new RequestParams();
-                params.put("table","moneychangetable");
-                params.put("method", "_GET");
-                params.put("loverid", "jan");
-                client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
+                setReyeler();
             }
         });
     }
@@ -175,6 +187,9 @@ public class NoteFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+   }
+
+    public static void setReyeler(){
         list.clear();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -182,6 +197,13 @@ public class NoteFragment extends BaseFragment {
         params.put("method", "_GET");
         params.put("loverid", "jan");
         client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
+        RequestParams params1 = new RequestParams();
+        params1.put("table","lovertable");
+        params1.put("method", "_Money");
+        params1.put("Mate", "_GET");
+        params1.put("loverid", "jan");
+        client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(handler, 2, 20));
+
     }
 
 }

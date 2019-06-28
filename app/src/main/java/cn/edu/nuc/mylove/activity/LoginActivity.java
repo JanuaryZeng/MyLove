@@ -17,7 +17,11 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import java.util.List;
+import java.util.Map;
+
 import cn.edu.nuc.Helper.IDHelper;
+import cn.edu.nuc.Helper.JSONTOOL;
 import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
 
@@ -37,19 +41,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 case 2:
                     t = Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_LONG);//信息框
                     t.show();//调用
+                    Map<String, String> map = JSONTOOL.analyze_once_json(msg.obj.toString());
 
                     SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("loverid", String.valueOf(et_username.getText()));
                     editor.putString("password", String.valueOf(et_password.getText()));
+                    editor.putString("loverdate", map.get("loverdate"));
                     editor.commit();
 
                     //读取数据
                     //String username = sp.getString(USERNAME, null);
                     //String username = sp.getString(PASSWORD, null);
-
+                    int in = R.mipmap.canyin;
                     IDHelper.loverID = String.valueOf(et_username.getText());
-                    finish();
+                    IDHelper.password = String.valueOf(et_password.getText());
+                    IDHelper.date = map.get("loverdate");
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     break;
                 case 20:
                     t = Toast.makeText(LoginActivity.this, "登陆失败", Toast.LENGTH_LONG);//信息框

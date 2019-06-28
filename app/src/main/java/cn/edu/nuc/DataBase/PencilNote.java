@@ -8,6 +8,8 @@ public class PencilNote implements MultiItemEntity {
     public static final int UP = 1;
     public static final int Down = 2;
     public static final int TYPE = 3;
+    public static final int Fin = 4;
+    public static final int Blank = 5;
     private int itemType;
     private String date = null;
     private int icon = -1;

@@ -10,22 +10,22 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="0dp"
-            android:textSize="20sp"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:minHeight="0dp"-->
+            <!--android:textSize="20sp"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="0dp"
-            android:text="2月"
-            android:textSize="30sp"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:minHeight="0dp"-->
+            <!--android:text="记账"-->
+            <!--android:textSize="30sp"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,9 +46,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="支出" />
+                    android:text="收入" />
 
                 <TextView
+                    android:id="@+id/shouru"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2000.30" />
@@ -61,14 +62,16 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingBottom="8dp"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收入" />
+                    android:text="支出" />
 
                 <TextView
+                    android:id="@+id/zhichu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3000.30" />
@@ -99,6 +102,7 @@
         android:layout_height="wrap_content"/>
 
     <android.support.design.widget.FloatingActionButton
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

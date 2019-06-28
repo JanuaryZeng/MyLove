@@ -38,6 +38,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.UpdateMoneyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.SpendActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

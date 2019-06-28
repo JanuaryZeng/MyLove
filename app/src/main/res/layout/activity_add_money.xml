@@ -19,8 +19,7 @@
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="金额"
-            android:inputType="textPassword" />
+            android:hint="金额"/>
         <Button
             android:id="@+id/button13"
             android:layout_width="270dp"

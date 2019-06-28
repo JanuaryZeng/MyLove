@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import cn.edu.nuc.DataBase.MoneyNote;
 import cn.edu.nuc.DataBase.PencilNote;
 import cn.edu.nuc.Helper.IDHelper;
+import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
 import cn.edu.nuc.mylove.activity.RegisterActivity;
@@ -43,7 +45,7 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
     protected void convert(final BaseViewHolder helper, final MoneyNote item) {
         switch(helper.getItemViewType()){
             case MoneyNote.LEFT:
-                helper.setBackgroundRes(R.id.imMoneyLeft, item.getIcon())
+                helper.setImageResource(R.id.imMoneyLeft, item.getIcon())
                         .setText(R.id.tvMoneyLeftTime,item.getTime())
                         .setText(R.id.tvMoneyLeft,item.getMoney())
                         .setText(R.id.tvMoneyLeftText,item.getText())
@@ -54,6 +56,7 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                 intent.putExtra("moneytypeid",item.getText());
                                 intent.putExtra("moneychangeid",item.getId());
                                 intent.putExtra("moneydate",item.getTime());
+                                IDHelper.dir = 2;
                                 v.getContext().startActivity(intent);
                             }
                         }).setOnClickListener(R.id.rightDel, new View.OnClickListener() {
@@ -70,10 +73,17 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                             public void handleMessage(Message msg) {
                                                 switch (msg.what) {
                                                     case 2:
-                                                        dialog.dismiss();
-                                                        Toast.makeText(mContext, "删除成功请刷新", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                                                        NoteFragment.setReyeler();
                                                         break;
                                                     case 20:
+                                                        Toast.makeText(mContext, "服务器请求失败", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    case 3:
+                                                        NoteFragment.setReyeler();
+                                                        dialog.dismiss();
+                                                        break;
+                                                    case 30:
                                                         Toast.makeText(mContext, "服务器请求失败", Toast.LENGTH_SHORT).show();
                                                         break;
                                                 }
@@ -87,6 +97,23 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                         params.put("moneychangeid",item.getId());
                                         params.put("loverid","jan");
                                         client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
+                                        RequestParams params1 = new RequestParams();
+                                        params1.put("table","lovertable");
+                                        params1.put("method", "_PUT");
+                                        params1.put("loverid", "jan");
+                                        params1.put("loverdate", IDHelper.date);
+                                        params1.put("loverpassword", IDHelper.password);
+
+//                                        Log.e("yao2", "1  IDHelper.monein :"+IDHelper.moneyin);
+//                                        Log.e("yao2", "1  IDHelper.moneyout :"+IDHelper.moneyout);
+                                        IDHelper.moneyout += Float.valueOf(item.getMoney());
+//                                        Log.e("yao2", "2  IDHelper.monein :"+IDHelper.moneyin);
+//                                        Log.e("yao2", "2  IDHelper.moneyout :"+IDHelper.moneyout);
+                                        params1.put("moneyout", IDHelper.moneyout);
+                                        params1.put("moneyin", IDHelper.moneyin);
+
+                                        client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(handler, 3, 30));
+
                                     }
                                 });
                         normalDialog.setNegativeButton("关闭",
@@ -113,6 +140,7 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                 intent.putExtra("moneytypeid",item.getText());
                                 intent.putExtra("moneychangeid",item.getId());
                                 intent.putExtra("moneydate",item.getTime());
+                                IDHelper.dir = 1;
                                 v.getContext().startActivity(intent);
                             }
                         })
@@ -130,10 +158,17 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                                     public void handleMessage(Message msg) {
                                                         switch (msg.what) {
                                                             case 2:
-                                                                dialog.dismiss();
-                                                                Toast.makeText(mContext, "删除成功请刷新", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                                                                NoteFragment.setReyeler();
                                                                 break;
                                                             case 20:
+                                                                Toast.makeText(mContext, "服务器请求失败", Toast.LENGTH_SHORT).show();
+                                                                break;
+                                                            case 3:
+                                                                NoteFragment.setReyeler();
+                                                                dialog.dismiss();
+                                                                break;
+                                                            case 30:
                                                                 Toast.makeText(mContext, "服务器请求失败", Toast.LENGTH_SHORT).show();
                                                                 break;
                                                         }
@@ -147,6 +182,22 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                                 params.put("moneychangeid",item.getId());
                                                 params.put("loverid","jan");
                                                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
+                                                RequestParams params1 = new RequestParams();
+                                                params1.put("table","lovertable");
+                                                params1.put("method", "_PUT");
+                                                params1.put("loverid", "jan");
+                                                params1.put("loverdate", IDHelper.date);
+                                                params1.put("loverpassword", IDHelper.password);
+
+                                                Log.e("yao2", "1  IDHelper.monein :"+IDHelper.moneyin);
+                                                Log.e("yao2", "1  IDHelper.moneyout :"+IDHelper.moneyout);
+                                                IDHelper.moneyin -= Float.valueOf(item.getMoney());
+                                                Log.e("yao2", "2  IDHelper.monein :"+IDHelper.moneyin);
+                                                Log.e("yao2", "2  IDHelper.moneyout :"+IDHelper.moneyout);
+                                                params1.put("moneyout", IDHelper.moneyout);
+                                                params1.put("moneyin", IDHelper.moneyin);
+
+                                                client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(handler, 3, 30));
                                             }
                                         });
                                 normalDialog.setNegativeButton("关闭",
