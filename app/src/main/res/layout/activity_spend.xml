@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal"
+    tools:context=".activity.AddMoneyActivity">
+
+    <Spinner
+        android:id="@+id/spSpend"
+        android:layout_width="109dp"
+        android:layout_height="46dp" />
+    <EditText
+        android:id="@+id/editText21"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="代办名称" />
+    <Button
+        android:id="@+id/button21"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="添加消费代办" />
+    <Spinner
+        android:id="@+id/spPencil"
+        android:layout_width="109dp"
+        android:layout_height="46dp" />
+    <EditText
+        android:id="@+id/editText22"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="代办名称" />
+    <Button
+        android:id="@+id/button22"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="添加代办" />
+
+
+    <Button
+        android:id="@+id/button23"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="返回" />
+</LinearLayout>

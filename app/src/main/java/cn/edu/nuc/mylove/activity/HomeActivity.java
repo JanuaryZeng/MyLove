@@ -5,15 +5,22 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
 
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,22 +41,43 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.filter.Filter;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.listener.OnCheckedListener;
+import com.zhihu.matisse.listener.OnSelectedListener;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import cn.edu.nuc.Adapter.FirstTimeAdapter;
 import cn.edu.nuc.DataBase.FirstTimeNote;
+import cn.edu.nuc.Helper.Glide4Engine;
 import cn.edu.nuc.Helper.IDHelper;
+import cn.edu.nuc.Helper.GifSizeFilter;
+
+import cn.edu.nuc.Helper.JSONTOOL;
 import cn.edu.nuc.Helper.MoneyTypeTable;
+import cn.edu.nuc.Helper.UpLoadPhotos;
 import cn.edu.nuc.fragment.FriendFragment;
 import cn.edu.nuc.fragment.HomeFragment;
 import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.fragment.PencilFragment;
+import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
 
 import static cn.edu.nuc.Helper.IDHelper.date;
@@ -57,6 +85,9 @@ import static cn.edu.nuc.Helper.IDHelper.loverID;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
+    private List<Uri> mSelected;
 
     private EasyNavigationBar navigationBar;
     private String[] tabText = {"首页", "记录", "", "目标", "记账"};
@@ -75,6 +106,8 @@ public class HomeActivity extends BaseActivity
     private LinearLayout menuLayout;
     private View cancelImageView;
     private Handler mHandler = new Handler();
+    private TextView tvUserName = null;
+    private ImageView imageView = null;
 
 
     @Override
@@ -82,25 +115,81 @@ public class HomeActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
-        if(sp.contains("loverid")){
-            IDHelper.loverID = sp.getString("loverid",null);
-            IDHelper.init();
-        }else{
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-
+//        SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
+//        if(sp.contains("loverid")){
+//            IDHelper.loverID = sp.getString("loverid",null);
+//            IDHelper.setGender(sp.getString("gender",null));
+//            IDHelper.init();
+//            @SuppressLint("HandlerLeak") Handler handler = new Handler() {
+//                public void handleMessage(Message msg) {
+//                    switch (msg.what) {
+//                        case 3:
+//                            List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
+//                            for(Map<String, String> littlemap : maps){
+//
+//                                String usergender = littlemap.get("usergender");
+//                                String username = littlemap.get("username");
+//                                String usericon = littlemap.get("usericon");
+//                                String userborn = littlemap.get("userborn");
+//
+//                                if(usergender.equals("man")){
+//                                    IDHelper.userIcon.put("man",usericon);
+//                                    if(IDHelper.gender.equals("man")){
+//                                        IDHelper.myName = username;
+//                                        IDHelper.born = userborn;
+//                                    }
+//                                }else if(usergender.equals("woman")){
+//                                    IDHelper.userIcon.put("woman",usericon);
+//                                    if(IDHelper.gender.equals("woman")){
+//                                        IDHelper.myName = username;
+//                                        IDHelper. born = userborn;
+//                                    }
+//                                }
+//                                tvUserName.setText(IDHelper.myName);
+//                                Glide.with(HomeActivity.this).load(IDHelper.getMyIcon()).into((ImageView) findViewById(R.id.imageView));
+//                            }
+//                            break;
+//                        case 30:
+//                            break;
+//                    }
+//                    super.handleMessage(msg);
+//                }
+//            };
+//            AsyncHttpClient client = new AsyncHttpClient();
+//            RequestParams params2 = new RequestParams();
+//            params2.put("table","usertable");
+//            params2.put("method", "_GET");
+//            params2.put("loverid", loverID);
+//            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//            navigationView.setNavigationItemSelectedListener(this);
+//            View headerView = navigationView.getHeaderView(0);
+//
+//            tvUserName = headerView.findViewById(R.id.tvUserName);
+////            Log.e("jianbo", String.valueOf(tvUserName));
+//            client.post("http://"+IDHelper.IP+":8000/android_user/", params2, new DjangoListener(handler, 3, 30));
+//        }else{
+//            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        }
 
         init();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void init(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+
+        tvUserName = headerView.findViewById(R.id.tvUserName);
+        imageView = headerView.findViewById(R.id.imageView);
+        //加载头像
+        Log.e("chuli","12346*******--"+IDHelper.getMyIcon());
+        Glide.with(HomeActivity.this).load(IDHelper.getMyIcon()).into(imageView);
+        //加载网名
+        tvUserName.setText(IDHelper.getMyName());
+
 
         //加载数据
 
@@ -138,6 +227,23 @@ public class HomeActivity extends BaseActivity
 
 
         navigationBar.setAddViewLayout(createWeiboView());
+
+//        //延时线程
+//        TimerTask delayedThreadStartTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//                //captureCDRProcess();
+//                //moved to TimerTask
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                    }
+//                }).start();
+//            }
+//        };
+//        Timer timer = new Timer();
+//        timer.schedule(delayedThreadStartTask,   5000); //1 minute
 
     }
 
@@ -233,6 +339,8 @@ public class HomeActivity extends BaseActivity
                     String str = (String) menuText.getText();
                     switch(str){
                         case "动态":
+                            Intent intent2 = new Intent(HomeActivity.this, AddFriendActivity.class);
+                            startActivity(intent2);
                             break;
                         case "消费":
                             Intent intent = new Intent(HomeActivity.this,SpendActivity.class);
@@ -258,6 +366,15 @@ public class HomeActivity extends BaseActivity
             menuLayout.addView(itemView);
         }
         return view;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            mSelected = Matisse.obtainResult(data);
+//            Log.d("Matisse", "mSelected: " + mSelected);
+        }
     }
 
     //

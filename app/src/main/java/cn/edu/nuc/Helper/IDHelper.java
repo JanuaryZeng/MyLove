@@ -3,18 +3,25 @@ package cn.edu.nuc.Helper;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.myListener.DjangoListener;
+import cn.edu.nuc.mylove.R;
+import cn.edu.nuc.mylove.activity.HomeActivity;
 
 public class IDHelper  {
+
     public static String loverID = null;
     public static String IP = "10.0.116.45";
     public static float moneyin = (float) 0.0;
@@ -22,6 +29,13 @@ public class IDHelper  {
     public static String date = null;
     public static String password = null;
     public static int dir = 0;
+
+    public static String gender = "man";
+    public static String born = null;
+
+    public static Map<String,String> userIcon = new HashMap<String,String>();
+    public static Map<String,String> userName = new HashMap<String,String>();
+
 
     public static Map<String, Integer> map = new HashMap<String,Integer>();
 
@@ -56,6 +70,42 @@ public class IDHelper  {
                         break;
                     case 20:
                         break;
+                    case 3:
+                        List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
+                        for(Map<String, String> littlemap : maps){
+
+                            String usergender = littlemap.get("usergender");
+                            String username = littlemap.get("username");
+                            String usericon = littlemap.get("usericon");
+                            String userborn = littlemap.get("userborn");
+//                            Log.e("jianming","************---"+gender);
+//                            Log.e("jianming","************---"+usergender);
+//                            Log.e("jianming","************---"+username);
+//                            Log.e("jianming","************---"+usericon);
+//                            Log.e("jianming","************---"+userborn);
+
+                            if(usergender.equals("man")){
+                                userIcon.put("man",usericon);
+                                userName.put("man",username);
+                                if(gender.equals("man")){
+                                    born = userborn;
+                                }
+                            }else if(usergender.equals("woman")){
+                                userIcon.put("woman",usericon);
+                                userName.put("woman",username);
+                                if(gender.equals("woman")){
+                                    born = userborn;
+                                }
+                            }
+//                            Log.e("jianming",myName);
+//                            Log.e("jianming",born);
+//                            Log.e("jianming", String.valueOf(userIcon));
+//                            Log.e("jianjian","------22222222--********"+gender);
+//                            Log.e("jianjian","-----222222---********"+userIcon);
+                        }
+                        break;
+                    case 30:
+                        break;
                 }
                 super.handleMessage(msg);
             }
@@ -69,6 +119,37 @@ public class IDHelper  {
         params1.put("loverid", loverID);
         client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(handler, 2, 20));
 
+        RequestParams params2 = new RequestParams();
+        params2.put("table","usertable");
+        params2.put("method", "_GET");
+        params2.put("loverid", loverID);
+        client.post("http://"+IDHelper.IP+":8000/android_user/", params2, new DjangoListener(handler, 3, 30));
+
+    }
+
+    public static String getMyIcon(){
+//        Log.e("jianjian","--------********"+gender);
+//        Log.e("jianjian","--------********"+userIcon);
+        return userIcon.get(gender);
+    }
+    public static String getTaIcon(){
+        if(gender.equals("man"))
+            return userIcon.get("woman");
+         else if(gender.equals("woman"))
+             return userIcon.get("man");
+         return "错误";
+    }
+
+    public static String getMyName(){
+        return userName.get(gender);
+    }
+
+    public static String getTaName(){
+        if(gender.equals("man"))
+            return userName.get("woman");
+        else if(gender.equals("woman"))
+            return userName.get("man");
+        return "错误";
     }
 
     public static String getID(){
@@ -83,4 +164,92 @@ public class IDHelper  {
         IDHelper.loverID = loverID;
     }
 
+    public static String getIP() {
+        return IP;
+    }
+
+    public static void setIP(String IP) {
+        IDHelper.IP = IP;
+    }
+
+    public static float getMoneyin() {
+        return moneyin;
+    }
+
+    public static void setMoneyin(float moneyin) {
+        IDHelper.moneyin = moneyin;
+    }
+
+    public static float getMoneyout() {
+        return moneyout;
+    }
+
+    public static void setMoneyout(float moneyout) {
+        IDHelper.moneyout = moneyout;
+    }
+
+    public static String getDate() {
+        return date;
+    }
+
+    public static void setDate(String date) {
+        IDHelper.date = date;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
+
+    public static void setPassword(String password) {
+        IDHelper.password = password;
+    }
+
+    public static int getDir() {
+        return dir;
+    }
+
+    public static void setDir(int dir) {
+        IDHelper.dir = dir;
+    }
+
+    public static String getGender() {
+        return gender;
+    }
+
+    public static void setGender(String gender) {
+        IDHelper.gender = gender;
+    }
+
+    public static Map<String, Integer> getMap() {
+        return map;
+    }
+
+    public static void setMap(Map<String, Integer> map) {
+        IDHelper.map = map;
+    }
+
+
+    public static String getBorn() {
+        return born;
+    }
+
+    public static void setBorn(String born) {
+        IDHelper.born = born;
+    }
+
+    public static Map<String, String> getUserIcon() {
+        return userIcon;
+    }
+
+    public static void setUserIcon(Map<String, String> userIcon) {
+        IDHelper.userIcon = userIcon;
+    }
+
+    public static Map<String, String> getUserName() {
+        return userName;
+    }
+
+    public static void setUserName(Map<String, String> userName) {
+        IDHelper.userName = userName;
+    }
 }

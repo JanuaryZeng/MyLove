@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button login_btn = null;
     private TextView AITest = null;
 
+    private RadioGroup radioGroup = null;
+    private RadioButton radioButton_boy = null,radioButton_girl = null;
+
+    private String gender = null;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -48,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString("loverid", String.valueOf(et_username.getText()));
                     editor.putString("password", String.valueOf(et_password.getText()));
                     editor.putString("loverdate", map.get("loverdate"));
+                    editor.putString("gender", gender);
                     editor.commit();
 
                     //读取数据
@@ -57,7 +65,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     IDHelper.loverID = String.valueOf(et_username.getText());
                     IDHelper.password = String.valueOf(et_password.getText());
                     IDHelper.date = map.get("loverdate");
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    IDHelper.setGender(gender);
+                    Intent intent = new Intent(LoginActivity.this, LaunchActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     break;
@@ -81,6 +90,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_btn.setOnClickListener(this);
         AITest = findViewById(R.id.AITest);
         AITest.setOnClickListener(this);
+
+        radioGroup=(RadioGroup)findViewById(R.id.radioGroup_sex_id);
+        radioButton_boy=(RadioButton)findViewById(R.id.boy_id);
+        radioButton_girl=(RadioButton)findViewById(R.id.girl_id);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == radioButton_boy.getId()){
+                    gender = "man";
+                }else if(checkedId == radioButton_girl.getId()){
+                    gender = "woman";
+                }
+            }
+        });
+
     }
 
     @Override
@@ -101,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
                 break;
+
         }
     }
 }

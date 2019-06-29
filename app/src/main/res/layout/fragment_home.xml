@@ -46,7 +46,7 @@
                         android:gravity="center"
                         android:layout_weight="1">
                         <ImageView
-                            android:id="@+id/ivTouXiangRightt"
+                            android:id="@+id/ivTouXiangRight"
                             android:layout_width="75dp"
                             android:layout_height="75dp"
                             android:scaleType = "fitXY"

@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="icon_size">38dp</dimen>
     <dimen name="icon_add_size">50dp</dimen>
+    <dimen name="grid_expected_size">120dp</dimen>
 </resources>

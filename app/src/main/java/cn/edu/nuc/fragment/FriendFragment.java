@@ -1,29 +1,55 @@
 package cn.edu.nuc.fragment;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import cn.edu.nuc.Adapter.FirstTimeAdapter;
 import cn.edu.nuc.Adapter.FriendAdapter;
 import cn.edu.nuc.DataBase.FirstTimeNote;
 import cn.edu.nuc.DataBase.FriendNote;
+import cn.edu.nuc.Helper.IDHelper;
+import cn.edu.nuc.Helper.JSONTOOL;
+import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
 import cn.edu.nuc.mylove.activity.HomeActivity;
+import cn.edu.nuc.mylove.activity.LaunchActivity;
+import cn.edu.nuc.mylove.activity.LoginActivity;
+
+import static android.view.View.INVISIBLE;
 
 public class FriendFragment extends BaseFragment {
 
-    private static final String IMGURL1 = "http://img.hb.aicdn.com/05927bdaec8213d858a0c3ec201ea0f405ad40e845d02-qJDlLb_fw658";
+    private static RecyclerView mRv = null;
+    private static  LinearLayoutManager linear = null;
+    private static FloatingActionButton fabFri = null;
+
+
+    private static final String IMGURL1 = "/storage/emulated/0/阅图/PictureUnlock_hknew_78340.pictureunlock.jpg";
     private static final String IMGURL2 = "http://img.hb.aicdn.com/98e2007c524387a1d6444f9b80a15cf253d408b2244ed-owRaCM_fw658";
     private static final String IMGURL3 = "http://img.hb.aicdn.com/f69f6ea969f2231be1f9fe6ffd0e73965774a6336986f-mEVEjy_fw658";
     private static final String IMGURL4 = "http://img.hb.aicdn.com/c7f89bec028ecdc8348e80b0911baf10666f932b40396-u7wY7L_fw658";
@@ -49,6 +75,74 @@ public class FriendFragment extends BaseFragment {
         return view;
     }
 
+    @SuppressLint("HandlerLeak")
+    private static  Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 2:
+                    List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
+                    List<FriendNote> friendNotes = new ArrayList<FriendNote>();
+                    for(Map<String ,String> map :maps) {
+                        String friendid = map.get("friendid");
+                        String usergender = map.get("usergender");
+                        String frienddate = map.get("frienddate");
+                        String friendphotos1 = map.get("friendphotos1");
+                        String friendphotos2 = map.get("friendphotos2");
+                        String friendphotos3 = map.get("friendphotos3");
+                        String friendphotos4 = map.get("friendphotos4");
+                        String friendtext = map.get("friendtext");
+
+
+                        List<String> photos = new ArrayList<String>();
+
+                        String[] str1 = friendphotos1.split("去");
+                        String[] str2 = friendphotos2.split("去");
+                        String[] str3 = friendphotos3.split("去");
+                        String[] str4 = friendphotos4.split("去");
+                        for (int i = 0; i < str1.length; i++){
+                            if(str1[i].contains("http"))
+                                photos.add(str1[i]);
+                        }
+                        for(int i = 0; i < str2.length; i++){
+                            if(str2[i].contains("http"))
+                                photos.add(str2[i]);
+                        }
+                        for(int i = 0; i < str3.length; i++){
+                            if(str3[i].contains("http"))
+                                photos.add(str3[i]);
+                        }
+                        for(int i = 0; i < str4.length; i++){
+                            if(str4[i].contains("http"))
+                                photos.add(str4[i]);
+                        }
+                        FriendNote friendNote = new FriendNote();
+                        friendNote.setId(friendid);
+                        friendNote.setGender(usergender);
+                        friendNote.setTime(frienddate);
+                        friendNote.setText(friendtext);
+                        friendNote.setPhotoUrl(photos);
+                        if(usergender.equals("man")){
+                            friendNote.setIcon(IDHelper.getUserIcon().get("man"));
+                            friendNote.setName(IDHelper.getUserName().get("man"));
+                        }
+                        else if(usergender.equals("woman")){
+                            friendNote.setIcon(IDHelper.getUserIcon().get("woman"));
+                            friendNote.setName(IDHelper.getUserName().get("woman"));
+                        }
+                        friendNotes.add(friendNote);
+                    }
+                    Collections.reverse(friendNotes);
+                    mRv.setLayoutManager(linear);
+                    mRv.setAdapter(new FriendAdapter(friendNotes));
+                    Log.e("xujian","*-*-*-*-*-*-*-/*-/*-/*-/*-/*-/*-/*-///---=="+friendNotes);
+                    break;
+                case 20:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     private View InitView(View view){
         List<FirstTimeNote> firstTimeNotes = new ArrayList<FirstTimeNote>();
 
@@ -64,62 +158,33 @@ public class FriendFragment extends BaseFragment {
         friendRecycler.setLayoutManager(linearLayoutManager);
         friendRecycler.setAdapter(new FirstTimeAdapter(firstTimeNotes));
 
-        List<FriendNote> friendNotes = new ArrayList<FriendNote>();
 
-        List<String> photos = new ArrayList<String>();
-        List<String> photos1 = new ArrayList<String>();
-        List<String> photos2 = new ArrayList<String>();
-        List<String> photos3 = new ArrayList<String>();
-        List<String> photos4 = new ArrayList<String>();
+        //*********************************分隔符***********************************************************************
 
+        mRv = view.findViewById(R.id.friendRecycler);
+        linear = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        setReyeler();
+        //刷新按钮
+        fabFri = (FloatingActionButton) view.findViewById(R.id.fabFri);
+        fabFri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setReyeler();
+            }
+        });
 
-        photos.add(IMGURL1);
-        photos1.add(IMGURL1);
-        photos2.add(IMGURL1);
-        photos3.add(IMGURL1);
-        photos4.add(IMGURL1);
-
-
-        friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find),
-                "Jan","落霞与孤鹜齐飞，秋水共长天一色","30min",photos ));
-        photos1.add(IMGURL2);
-        photos2.add(IMGURL2);
-        photos3.add(IMGURL2);
-        photos4.add(IMGURL2);
-
-
-        friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find1),
-                "Yao","天青色等烟雨而我在等你","35min",photos1 ));
-        photos2.add(IMGURL3);
-        photos2.add(IMGURL4);
-        photos3.add(IMGURL3);
-        photos3.add(IMGURL4);
-        photos4.add(IMGURL3);
-        photos4.add(IMGURL4);
-
-
-        friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find),
-                "Jan","落霞与孤鹜齐飞","1h25min",photos2 ));
-        photos3.add(IMGURL6);
-        photos3.add(IMGURL7);
-        photos3.add(IMGURL8);
-        photos3.add(IMGURL9);
-        photos3.add(IMGURL10);
-        photos4.add(IMGURL6);
-        photos4.add(IMGURL7);
-        photos4.add(IMGURL8);
-        photos4.add(IMGURL9);
-        photos4.add(IMGURL10);
-        friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find1),
-                "Yao","秋水共长天一色","12h25min",photos3 ));
-        photos4.add(IMGURL15);
-        friendNotes.add(new FriendNote(BitmapFactory.decodeResource(this.getResources(), R.mipmap.find1),
-                "Yao","天青","3天前",photos4 ));
-
-        RecyclerView mRv = view.findViewById(R.id.friendRecycler);
-        mRv.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        mRv.setAdapter(new FriendAdapter(friendNotes));
         return view;
+    }
+
+
+    public static void setReyeler(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("method", "_GET");
+        params.put("table","friendtable");
+        params.put("loverid","jan");
+        client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
+
     }
 
     @Override
