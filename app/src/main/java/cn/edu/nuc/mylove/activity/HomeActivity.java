@@ -115,64 +115,6 @@ public class HomeActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-//        SharedPreferences sp = getSharedPreferences("ID", MODE_PRIVATE);
-//        if(sp.contains("loverid")){
-//            IDHelper.loverID = sp.getString("loverid",null);
-//            IDHelper.setGender(sp.getString("gender",null));
-//            IDHelper.init();
-//            @SuppressLint("HandlerLeak") Handler handler = new Handler() {
-//                public void handleMessage(Message msg) {
-//                    switch (msg.what) {
-//                        case 3:
-//                            List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
-//                            for(Map<String, String> littlemap : maps){
-//
-//                                String usergender = littlemap.get("usergender");
-//                                String username = littlemap.get("username");
-//                                String usericon = littlemap.get("usericon");
-//                                String userborn = littlemap.get("userborn");
-//
-//                                if(usergender.equals("man")){
-//                                    IDHelper.userIcon.put("man",usericon);
-//                                    if(IDHelper.gender.equals("man")){
-//                                        IDHelper.myName = username;
-//                                        IDHelper.born = userborn;
-//                                    }
-//                                }else if(usergender.equals("woman")){
-//                                    IDHelper.userIcon.put("woman",usericon);
-//                                    if(IDHelper.gender.equals("woman")){
-//                                        IDHelper.myName = username;
-//                                        IDHelper. born = userborn;
-//                                    }
-//                                }
-//                                tvUserName.setText(IDHelper.myName);
-//                                Glide.with(HomeActivity.this).load(IDHelper.getMyIcon()).into((ImageView) findViewById(R.id.imageView));
-//                            }
-//                            break;
-//                        case 30:
-//                            break;
-//                    }
-//                    super.handleMessage(msg);
-//                }
-//            };
-//            AsyncHttpClient client = new AsyncHttpClient();
-//            RequestParams params2 = new RequestParams();
-//            params2.put("table","usertable");
-//            params2.put("method", "_GET");
-//            params2.put("loverid", loverID);
-//            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//            navigationView.setNavigationItemSelectedListener(this);
-//            View headerView = navigationView.getHeaderView(0);
-//
-//            tvUserName = headerView.findViewById(R.id.tvUserName);
-////            Log.e("jianbo", String.valueOf(tvUserName));
-//            client.post("http://"+IDHelper.IP+":8000/android_user/", params2, new DjangoListener(handler, 3, 30));
-//        }else{
-//            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
-
         init();
 
     }
@@ -190,10 +132,46 @@ public class HomeActivity extends BaseActivity
         //加载网名
         tvUserName.setText(IDHelper.getMyName());
 
+        //设置头像监听事件
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Matisse.from(HomeActivity.this)
+                        .choose(MimeType.ofAll(), false)
+                        .countable(true)
+                        .capture(true)
+                        .captureStrategy(
+                                new CaptureStrategy(true, "com.zhihu.matisse.sample.fileprovider"))
+                        .maxSelectable(1)
+                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                        .gridExpectedSize(
+                                getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        .thumbnailScale(0.85f)
+//                                            .imageEngine(new GlideEngine())  // for glide-V3
+                        .imageEngine(new Glide4Engine())    // for glide-V4
+                        .setOnSelectedListener(new OnSelectedListener() {
+                            @Override
+                            public void onSelected(
+                                    @NonNull List<Uri> uriList, @NonNull List<String> pathList) {
+                                // DO SOMETHING IMMEDIATELY HERE
+                                Log.e("onSelected", "onSelected: pathList=" + pathList);
 
-        //加载数据
-
-        MoneyTypeTable.init();
+                            }
+                        })
+                        .originalEnable(true)
+                        .maxOriginalSize(10)
+//                                    .autoHideToolbarOnSingleTap(true)
+                        .setOnCheckedListener(new OnCheckedListener() {
+                            @Override
+                            public void onCheck(boolean isChecked) {
+                                // DO SOMETHING IMMEDIATELY HERE
+                                Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                            }
+                        })
+                        .forResult(250);
+            }
+        });
 
         //显示底部导航栏
         navigationBar = findViewById(R.id.navigationBar);
@@ -371,9 +349,16 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+        if (requestCode == 250 && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data);
-//            Log.d("Matisse", "mSelected: " + mSelected);
+            final String str = String.valueOf(Matisse.obtainPathResult(data));
+//            Log.e("jianqu","---------*********------"+str.substring(1,str.length()-2));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    UpLoadPhotos.initIcon(str.substring(1,str.length()-1));
+                }
+            }).start();
         }
     }
 

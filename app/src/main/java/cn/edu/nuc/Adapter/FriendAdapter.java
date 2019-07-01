@@ -67,6 +67,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 final String id = String.valueOf(friendNotes.get(position).getId());
+                final String name = String.valueOf(friendNotes.get(position).getName());
                 final AlertDialog.Builder normalDialog = new AlertDialog.Builder(v.getContext());
                 normalDialog.setTitle("删除");
                 normalDialog.setMessage("确定删除吗？");
@@ -86,13 +87,18 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.MyViewHold
                                         super.handleMessage(msg);
                                     }
                                 };
+                                if(name.equals(IDHelper.getMyName())){
                                 AsyncHttpClient client = new AsyncHttpClient();
                                 RequestParams params = new RequestParams();
                                 params.put("method", "_DELETE");
                                 params.put("table","friendtable");
-                                Log.e("xujiandiao", "-----------**********---------"+id);
+//                                Log.e("xujiandiao", "-----------**********---------"+id);
+
                                 params.put("friendid",id);
                                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
+                                }else if(!name.equals(IDHelper.getMyName())){
+                                    Toast.makeText(holder.tvFriendName.getContext(), "只能删除自己的记录！！", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                 normalDialog.setNegativeButton("关闭",

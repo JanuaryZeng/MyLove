@@ -20,6 +20,7 @@ import java.util.Map;
 
 import cn.edu.nuc.Helper.IDHelper;
 import cn.edu.nuc.Helper.JSONTOOL;
+import cn.edu.nuc.Helper.MoneyTypeTable;
 import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
@@ -38,7 +39,7 @@ public class LaunchActivity extends AppCompatActivity {
             IDHelper.loverID = sp.getString("loverid",null);
             IDHelper.setGender(sp.getString("gender",null));
             IDHelper.init();
-
+            MoneyTypeTable.init();
             Integer time = 2000;    //设置等待时间，单位为毫秒
             Handler handler = new Handler();
             //当计时结束时，跳转至主界面

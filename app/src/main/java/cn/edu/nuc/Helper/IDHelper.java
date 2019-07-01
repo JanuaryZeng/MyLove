@@ -32,6 +32,7 @@ public class IDHelper  {
 
     public static String gender = "man";
     public static String born = null;
+    public static String userId = null;
 
     public static Map<String,String> userIcon = new HashMap<String,String>();
     public static Map<String,String> userName = new HashMap<String,String>();
@@ -74,6 +75,7 @@ public class IDHelper  {
                         List<Map<String, String>> maps = JSONTOOL.analyze_some_json(msg.obj.toString());
                         for(Map<String, String> littlemap : maps){
 
+                            String userid = littlemap.get("userid");
                             String usergender = littlemap.get("usergender");
                             String username = littlemap.get("username");
                             String usericon = littlemap.get("usericon");
@@ -89,12 +91,14 @@ public class IDHelper  {
                                 userName.put("man",username);
                                 if(gender.equals("man")){
                                     born = userborn;
+                                    userId =userid;
                                 }
                             }else if(usergender.equals("woman")){
                                 userIcon.put("woman",usericon);
                                 userName.put("woman",username);
                                 if(gender.equals("woman")){
                                     born = userborn;
+                                    userId =userid;
                                 }
                             }
 //                            Log.e("jianming",myName);
@@ -251,5 +255,13 @@ public class IDHelper  {
 
     public static void setUserName(Map<String, String> userName) {
         IDHelper.userName = userName;
+    }
+
+    public static String getUserId() {
+        return userId;
+    }
+
+    public static void setUserId(String userId) {
+        IDHelper.userId = userId;
     }
 }
