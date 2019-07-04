@@ -56,6 +56,7 @@ import com.zhihu.matisse.listener.OnCheckedListener;
 import com.zhihu.matisse.listener.OnSelectedListener;
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,9 @@ public class HomeActivity extends BaseActivity
     private Handler mHandler = new Handler();
     private TextView tvUserName = null;
     private ImageView imageView = null;
+    private TextView tvXiangLiang = null;
 
+    private View headerView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,19 +122,23 @@ public class HomeActivity extends BaseActivity
 
     }
 
+
+
     private void init(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
+        headerView = navigationView.getHeaderView(0);
 
         tvUserName = headerView.findViewById(R.id.tvUserName);
         imageView = headerView.findViewById(R.id.imageView);
-        //加载头像
-        Log.e("chuli","12346*******--"+IDHelper.getMyIcon());
-        Glide.with(HomeActivity.this).load(IDHelper.getMyIcon()).into(imageView);
-        //加载网名
-        tvUserName.setText(IDHelper.getMyName());
 
+        //恋爱天数设置
+        try {
+            tvXiangLiang = headerView.findViewById(R.id.tvXiangLiang);
+            tvXiangLiang.setText("我们在一起"+IDHelper.getLoverDay()+"天");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         //设置头像监听事件
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +233,22 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //加载头像
+//        Log.e("chuli","12346*******--"+IDHelper.getMyIcon());
+        Glide.with(HomeActivity.this).load(IDHelper.getMyIcon()).into(imageView);
+        //加载网名
+        tvUserName.setText(IDHelper.getMyName());
+        try {
+            tvXiangLiang = headerView.findViewById(R.id.tvXiangLiang);
+            tvXiangLiang.setText("我们在一起"+IDHelper.getLoverDay()+"天");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -258,9 +281,11 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent2 = new Intent(HomeActivity.this, AlterUserActivity.class);
+            startActivity(intent2);
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent1 = new Intent(HomeActivity.this, AlterPWDMainActivity.class);
+            startActivity(intent1);
         } else if (id == R.id.nav_slideshow) {
 
             Intent intent = new Intent(HomeActivity.this, RegisterActivity.class);
@@ -276,10 +301,6 @@ public class HomeActivity extends BaseActivity
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

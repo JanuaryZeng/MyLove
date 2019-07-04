@@ -1,5 +1,6 @@
 package cn.edu.nuc.Helper;
 
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -104,7 +105,7 @@ public class UpLoadPhotos   {
         StringBody userid = new StringBody(IDHelper.getUserId(), ContentType.TEXT_PLAIN);
         StringBody usergender = new StringBody(IDHelper.getGender(), ContentType.TEXT_PLAIN);
         StringBody username = new StringBody(IDHelper.getMyName(), ContentType.TEXT_PLAIN);
-        StringBody userborn = new StringBody(IDHelper.getBorn(), ContentType.TEXT_PLAIN);
+        StringBody userborn = new StringBody(IDHelper.getMyBorn(), ContentType.TEXT_PLAIN);
         StringBody loverid = new StringBody(IDHelper.getID(), ContentType.TEXT_PLAIN);
 
 
@@ -140,7 +141,6 @@ public class UpLoadPhotos   {
 
                 System.out.println("上传文件发生异常，请检查服务端异常问题");
             }
-
             EntityUtils.consume(resEntity);
             response.close();
             httpclient.close();

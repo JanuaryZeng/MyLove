@@ -113,7 +113,7 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
                 RequestParams params = new RequestParams();
                 params.put("method", "_PUT");
                 params.put("table","moneychangetable");
-                params.put("loverid","jan");
+                params.put("loverid",IDHelper.getLoverID());
                 params.put("moneychangeid",moneychangeid);
                 params.put("moneydate",moneydate);
                 params.put("moneynumber",etUpdateMon.getText());
@@ -129,7 +129,7 @@ public class UpdateMoneyActivity extends AppCompatActivity implements View.OnCli
                 RequestParams params1 = new RequestParams();
                 params1.put("table","lovertable");
                 params1.put("method", "_PUT");
-                params1.put("loverid", "jan");
+                params1.put("loverid", IDHelper.getLoverID());
                 params1.put("loverdate", IDHelper.date);
                 params1.put("loverpassword", IDHelper.password);
 

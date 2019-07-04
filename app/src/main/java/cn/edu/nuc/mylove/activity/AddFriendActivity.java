@@ -113,6 +113,7 @@ public class AddFriendActivity extends AppCompatActivity implements View.OnClick
                         else if(photos.length == 0){}
                         else{
                             UpLoadPhotos.init(photos, str);
+                            finish();
                         }
                     }
                 }).start();

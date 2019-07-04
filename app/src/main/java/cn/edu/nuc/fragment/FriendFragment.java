@@ -183,7 +183,7 @@ public class FriendFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.put("method", "_GET");
         params.put("table","friendtable");
-        params.put("loverid","jan");
+        params.put("loverid",IDHelper.getLoverID());
         client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
 
     }

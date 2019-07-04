@@ -11,6 +11,12 @@ import com.bumptech.glide.Glide;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +29,7 @@ import cn.edu.nuc.mylove.activity.HomeActivity;
 public class IDHelper  {
 
     public static String loverID = null;
-    public static String IP = "10.0.116.45";
+    public static String IP = "10.0.116.47";
     public static float moneyin = (float) 0.0;
     public static float moneyout = (float) 0.0;
     public static String date = null;
@@ -31,11 +37,11 @@ public class IDHelper  {
     public static int dir = 0;
 
     public static String gender = "man";
-    public static String born = null;
     public static String userId = null;
 
     public static Map<String,String> userIcon = new HashMap<String,String>();
     public static Map<String,String> userName = new HashMap<String,String>();
+    public static Map<String,String> userBorn = new HashMap<String,String>();
 
 
     public static Map<String, Integer> map = new HashMap<String,Integer>();
@@ -89,15 +95,15 @@ public class IDHelper  {
                             if(usergender.equals("man")){
                                 userIcon.put("man",usericon);
                                 userName.put("man",username);
+                                userBorn.put("man",userborn);
                                 if(gender.equals("man")){
-                                    born = userborn;
                                     userId =userid;
                                 }
                             }else if(usergender.equals("woman")){
                                 userIcon.put("woman",usericon);
                                 userName.put("woman",username);
+                                userBorn.put("woman",userborn);
                                 if(gender.equals("woman")){
-                                    born = userborn;
                                     userId =userid;
                                 }
                             }
@@ -144,6 +150,31 @@ public class IDHelper  {
          return "错误";
     }
 
+    public static String getMyBorn(){
+//        Log.e("jianjian","--------********"+gender);
+//        Log.e("jianjian","--------********"+userIcon);
+        return userBorn.get(gender);
+    }
+    public static String getTaBorn(){
+        if(gender.equals("man"))
+            return userBorn.get("woman");
+        else if(gender.equals("woman"))
+            return userBorn.get("man");
+        return "错误";
+    }
+    public static void setMyBorn(String born){
+        userBorn.put(gender,born);
+    }
+
+    public static void setTaBorn(String born){
+        if(gender.equals("man")){
+            userBorn.put("woman",born);
+        }else if(gender.equals("woman")){
+            userBorn.put("man",born);
+        }
+
+    }
+
     public static String getMyName(){
         return userName.get(gender);
     }
@@ -155,7 +186,9 @@ public class IDHelper  {
             return userName.get("man");
         return "错误";
     }
-
+    public static void setMyName(String name){
+        userName.put(gender,name);
+    }
     public static String getID(){
         return loverID;
     }
@@ -233,14 +266,6 @@ public class IDHelper  {
     }
 
 
-    public static String getBorn() {
-        return born;
-    }
-
-    public static void setBorn(String born) {
-        IDHelper.born = born;
-    }
-
     public static Map<String, String> getUserIcon() {
         return userIcon;
     }
@@ -263,5 +288,40 @@ public class IDHelper  {
 
     public static void setUserId(String userId) {
         IDHelper.userId = userId;
+    }
+
+    public static String getLoverDay() throws ParseException {
+//        Log.e("jianmingming","++++++++++++++++++++++++++"+date);
+        String s2=date;
+        String s1=TimeForm.getNowNoMinTime();
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=new GregorianCalendar();
+        Date d1 = df.parse(s1);
+        Date d2 = df.parse(s2);
+        String daynum = String.valueOf((d1.getTime()-d2.getTime())/(60*60*1000*24));
+        return daynum;
+    }
+
+    public static String getTaBri() throws ParseException {
+        String s2 = getTaBorn().substring(4);
+        StringBuffer s3 = new StringBuffer(TimeForm.getNowYear());
+        String s4 = String.valueOf(s3.append(s2));
+
+        String s1=TimeForm.getNowNoMinTime();
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        Date d1 = df.parse(s4);
+        Date d2 = df.parse(s1);
+        if((d1.getTime()-d2.getTime())>=0)
+            return String.valueOf((d1.getTime()-d2.getTime())/(60*60*1000*24));
+        else{
+            s2 = getTaBorn().substring(4);
+            s3 = new StringBuffer(String.valueOf(Integer.valueOf(TimeForm.getNowYear())+1));
+
+            s4 = String.valueOf(s3.append(s2));
+            d1 = df.parse(s4);
+            d2 = df.parse(s1);
+        }
+        Log.e("qweqwe",String.valueOf((d1.getTime()-d2.getTime())/(60*60*1000*24)));
+        return String.valueOf((d1.getTime()-d2.getTime())/(60*60*1000*24));
     }
 }

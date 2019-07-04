@@ -87,7 +87,7 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
                 time = TimeForm.getNowTime();
                 params.put("method", "_POST");
                 params.put("table","moneychangetable");
-                params.put("loverid","jan");
+                params.put("loverid",IDHelper.getLoverID());
                 params.put("moneydate", time);
                 params.put("moneynumber",editText17.getText());
                 params.put("moneytypeid",spAddMon.getSelectedItem().toString());
@@ -96,7 +96,7 @@ public class AddMoneyActivity extends AppCompatActivity implements View.OnClickL
                 RequestParams params1 = new RequestParams();
                 params1.put("table","lovertable");
                 params1.put("method", "_PUT");
-                params1.put("loverid", "jan");
+                params1.put("loverid", IDHelper.getLoverID());
                 params1.put("loverdate", IDHelper.date);
                 params1.put("loverpassword", IDHelper.password);
 

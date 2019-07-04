@@ -19,6 +19,12 @@ public class TimeForm {
         return str_time;
     }
 
+    public static String getNowYear(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        String str_time = sdf.format(dt);
+        return str_time;
+    }
+
     public static String getNowNoMinTime(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String str_time = sdf.format(dt);

@@ -195,13 +195,13 @@ public class NoteFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.put("table","moneychangetable");
         params.put("method", "_GET");
-        params.put("loverid", "jan");
+        params.put("loverid", IDHelper.getLoverID());
         client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
         RequestParams params1 = new RequestParams();
         params1.put("table","lovertable");
         params1.put("method", "_Money");
         params1.put("Mate", "_GET");
-        params1.put("loverid", "jan");
+        params1.put("loverid", IDHelper.getLoverID());
         client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(handler, 2, 20));
 
     }

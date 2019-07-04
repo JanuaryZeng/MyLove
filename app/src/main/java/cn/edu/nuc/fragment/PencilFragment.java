@@ -188,11 +188,8 @@ public class PencilFragment extends BaseFragment {
                     pencilAdapter = new PencilAdapter(list);
 
                     pencilRecycler.setAdapter(pencilAdapter);
-                    Log.e("jan", String.valueOf(list.size()));
-                    Log.e("jan","正确！！！");
                     break;
                 case 30:
-                    Log.e("jan","错误！！！");
                     break;
             }
             super.handleMessage(msg);
@@ -248,7 +245,7 @@ public class PencilFragment extends BaseFragment {
         RequestParams params = new RequestParams();
         params.put("table","notetable");
         params.put("method", "_GET");
-        params.put("loverid", "jan");
+        params.put("loverid", IDHelper.getLoverID());
         try {
             Thread.currentThread().sleep(100);
         } catch (InterruptedException e) {

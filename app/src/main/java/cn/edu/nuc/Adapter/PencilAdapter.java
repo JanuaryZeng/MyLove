@@ -97,7 +97,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                     RequestParams params = new RequestParams();
                                     params.put("table", "moneychangetable");
                                     params.put("method", "_POST");
-                                    params.put("loverid", "jan");
+                                    params.put("loverid", IDHelper.getLoverID());
                                     params.put("moneytypeid", item.getText().toString().trim());
                                     params.put("moneydate", TimeForm.getNowTime());
                                     params.put("moneynumber", money);
@@ -106,7 +106,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                     RequestParams params1 = new RequestParams();
                                     params1.put("table", "notetable");
                                     params1.put("method", "_PUT");
-                                    params1.put("loverid", "jan");
+                                    params1.put("loverid", IDHelper.getLoverID());
                                     params1.put("noteid", item.getId());
                                     params1.put("moneytypeid", item.getText());
                                     params1.put("notedate", item.getDate());
@@ -117,7 +117,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                     RequestParams params2 = new RequestParams();
                                     params2.put("table","lovertable");
                                     params2.put("method", "_PUT");
-                                    params2.put("loverid", "jan");
+                                    params2.put("loverid", IDHelper.getLoverID());
                                     params2.put("loverdate", IDHelper.date);
                                     params2.put("loverpassword", IDHelper.password);
 
@@ -157,7 +157,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                 RequestParams params = new RequestParams();
                                 params.put("table","notetable");
                                 params.put("method", "_PUT");
-                                params.put("loverid", "jan");
+                                params.put("loverid", IDHelper.getLoverID());
                                 params.put("noteid", item.getId());
                                 params.put("moneytypeid", item.getText());
                                 params.put("notedate", item.getDate());

@@ -21,6 +21,7 @@ import java.util.Map;
 import cn.edu.nuc.Helper.IDHelper;
 import cn.edu.nuc.Helper.JSONTOOL;
 import cn.edu.nuc.Helper.MoneyTypeTable;
+import cn.edu.nuc.Helper.TimeForm;
 import cn.edu.nuc.fragment.NoteFragment;
 import cn.edu.nuc.myListener.DjangoListener;
 import cn.edu.nuc.mylove.R;
@@ -38,6 +39,8 @@ public class LaunchActivity extends AppCompatActivity {
         if(sp.contains("loverid")){
             IDHelper.loverID = sp.getString("loverid",null);
             IDHelper.setGender(sp.getString("gender",null));
+            IDHelper.setDate(sp.getString("loverdate",null));
+            IDHelper.setTaBorn(TimeForm.getNowNoMinTime());
             IDHelper.init();
             MoneyTypeTable.init();
             Integer time = 2000;    //设置等待时间，单位为毫秒

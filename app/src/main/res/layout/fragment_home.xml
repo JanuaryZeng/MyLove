@@ -64,6 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#ffffff"
+                            android:visibility="invisible"
                             android:textSize="20sp"
                             android:text="我们在一起666天"/>
                     </LinearLayout>
@@ -85,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="闹钟"
+                        android:text="甜蜜日"
                         android:textSize="20sp"
                         />
                     <LinearLayout
@@ -131,21 +132,14 @@
                             android:orientation="vertical"
                             android:gravity="center">
                             <TextView
+                                android:id="@+id/tvHomeDay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="距离最近闹钟还有7小时15分钟"
+                                android:text="我们在一起666天"
                                 android:textColor="#ffffff"
-                                android:textSize="17sp"
+                                android:textSize="23sp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="闹钟时间为：7:45"
-                                android:textColor="#ffffff"
-                                android:textSize="15sp"
-                                android:layout_weight="1"
                                 />
                         </LinearLayout>
                     </LinearLayout>
@@ -212,21 +206,14 @@
                             android:orientation="vertical"
                             android:gravity="center">
                             <TextView
+                                android:id="@+id/tvHomeBri"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="距离最近纪念日还有100天"
+                                android:text="距离Ta的生日还有100天"
                                 android:textColor="#ffffff"
-                                android:textSize="17sp"
+                                android:textSize="21sp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="目标日：2019-10-01 星期三"
-                                android:textColor="#ffffff"
-                                android:textSize="15sp"
-                                android:layout_weight="1"
                                 />
                         </LinearLayout>
                     </LinearLayout>

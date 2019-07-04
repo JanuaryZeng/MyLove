@@ -95,12 +95,12 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                         params.put("method", "_DELETE");
                                         params.put("table","moneychangetable");
                                         params.put("moneychangeid",item.getId());
-                                        params.put("loverid","jan");
+                                        params.put("loverid",IDHelper.getLoverID());
                                         client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
                                         RequestParams params1 = new RequestParams();
                                         params1.put("table","lovertable");
                                         params1.put("method", "_PUT");
-                                        params1.put("loverid", "jan");
+                                        params1.put("loverid",IDHelper.getLoverID());
                                         params1.put("loverdate", IDHelper.date);
                                         params1.put("loverpassword", IDHelper.password);
 
@@ -180,12 +180,12 @@ public class MoneyAdapter extends BaseMultiItemQuickAdapter<MoneyNote,BaseViewHo
                                                 params.put("method", "_DELETE");
                                                 params.put("table","moneychangetable");
                                                 params.put("moneychangeid",item.getId());
-                                                params.put("loverid","jan");
+                                                params.put("loverid",IDHelper.getLoverID());
                                                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
                                                 RequestParams params1 = new RequestParams();
                                                 params1.put("table","lovertable");
                                                 params1.put("method", "_PUT");
-                                                params1.put("loverid", "jan");
+                                                params1.put("loverid", IDHelper.getLoverID());
                                                 params1.put("loverdate", IDHelper.date);
                                                 params1.put("loverpassword", IDHelper.password);
 

@@ -92,7 +92,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                 time = TimeForm.getNowNoMinTime();
                 params.put("method", "_POST");
                 params.put("table","notetable");
-                params.put("loverid","jan");
+                params.put("loverid",IDHelper.getLoverID());
                 params.put("notedate", time);
                 params.put("notetext",editText21.getText());
                 params.put("moneytypeid",spSpend.getSelectedItem().toString());
@@ -107,7 +107,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                 time = TimeForm.getNowNoMinTime();
                 params1.put("method", "_POST");
                 params1.put("table","notetable");
-                params1.put("loverid","jan");
+                params1.put("loverid",IDHelper.getLoverID());
                 params1.put("notedate", time);
                 params1.put("notetext",editText22.getText());
                 params1.put("moneytypeid",spPencil.getSelectedItem().toString());

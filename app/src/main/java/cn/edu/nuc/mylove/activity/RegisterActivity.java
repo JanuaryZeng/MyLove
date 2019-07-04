@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     break;
                 case 20:
                     Toast.makeText(RegisterActivity.this, "此用户名已被使用", Toast.LENGTH_LONG).show();//信息框
-
                     break;
             }
             super.handleMessage(msg);
@@ -80,8 +79,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 params.put("moneyout","0");
                 params.put("moneyin","0");
                 client.post("http://"+IDHelper.IP+":8000/android_user/", params, new DjangoListener(this.handler, 2, 20));
-                break;
 
+                RequestParams params1 = new RequestParams();
+                params1.put("method", "_POST");
+                params1.put("table","usertable");
+                params1.put("loverid",editText5.getText());
+                params1.put("usergender","man");
+                params1.put("username","user");
+                client.post("http://"+IDHelper.IP+":8000/android_user/", params1, new DjangoListener(this.handler, 2, 20));
+
+                RequestParams params2 = new RequestParams();
+                params2.put("method", "_POST");
+                params2.put("table","usertable");
+                params2.put("loverid",editText5.getText());
+                params2.put("usergender","woman");
+                params2.put("username","user");
+                client.post("http://"+IDHelper.IP+":8000/android_user/", params2, new DjangoListener(this.handler, 2, 20));
+
+                break;
         }
     }
 }
