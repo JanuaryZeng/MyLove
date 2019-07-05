@@ -29,7 +29,7 @@ import cn.edu.nuc.mylove.activity.HomeActivity;
 public class IDHelper  {
 
     public static String loverID = null;
-    public static String IP = "10.0.116.47";
+    public static String IP = "192.168.43.71";
     public static float moneyin = (float) 0.0;
     public static float moneyout = (float) 0.0;
     public static String date = null;

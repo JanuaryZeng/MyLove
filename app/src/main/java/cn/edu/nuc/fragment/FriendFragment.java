@@ -179,6 +179,11 @@ public class FriendFragment extends BaseFragment {
 
 
     public static void setReyeler(){
+//        try
+//        {
+//            Thread.currentThread().sleep(100);//毫秒
+//        }
+//        catch(Exception e){}
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("method", "_GET");

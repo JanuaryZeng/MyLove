@@ -44,12 +44,14 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                     Toast.makeText(mContext, "服务器错误", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
+                    PencilFragment.setRecycer();
                     break;
                 case 30:
                     Toast.makeText(mContext, "服务器错误", Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     NoteFragment.setReyeler();
+                    PencilFragment.setRecycer();
                     break;
                 case 40:
                     break;
@@ -121,16 +123,16 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                     params2.put("loverdate", IDHelper.date);
                                     params2.put("loverpassword", IDHelper.password);
 
-                                        Log.e("yao3", "1  item.getName() :"+item.getText());
-                                        Log.e("yao3", "1  IDHelper.map.get(item.getName()) :"+IDHelper.map.get(item.getText()));
+//                                        Log.e("yao3", "1  item.getName() :"+item.getText());
+//                                        Log.e("yao3", "1  IDHelper.map.get(item.getName()) :"+IDHelper.map.get(item.getText()));
                                     if(IDHelper.map.get(item.getText()) == 1){
                                         IDHelper.moneyin += Float.valueOf(money);
                                     }else if(IDHelper.map.get(item.getText()) == 2){
                                         IDHelper.moneyout += Float.valueOf(money);
                                     }
-                                    Log.e("yao3", "2  money :"+money);
-                                    Log.e("yao3", "2  IDHelper.monein :"+IDHelper.moneyin);
-                                    Log.e("yao3", "2  IDHelper.moneyout :"+IDHelper.moneyout);
+//                                    Log.e("yao3", "2  money :"+money);
+//                                    Log.e("yao3", "2  IDHelper.monein :"+IDHelper.moneyin);
+//                                    Log.e("yao3", "2  IDHelper.moneyout :"+IDHelper.moneyout);
                                     params2.put("moneyout", IDHelper.moneyout);
                                     params2.put("moneyin", IDHelper.moneyin);
 
@@ -164,7 +166,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                 params.put("notetext", item.getName());
                                 params.put("notestatus", PencilNote.Fin);
                                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 3, 30));
-                                PencilFragment.setRecycer();
+//                                PencilFragment.setRecycer();
                             }
                         });
                 break;
@@ -185,7 +187,7 @@ public class PencilAdapter extends BaseMultiItemQuickAdapter<PencilNote,BaseView
                                 params.put("method", "_DELETE");
                                 params.put("noteid", item.getId());
                                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(handler, 2, 20));
-                                PencilFragment.setRecycer();
+//                                PencilFragment.setRecycer();
                             }
                         });
                 break;

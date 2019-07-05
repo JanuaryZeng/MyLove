@@ -43,6 +43,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
             switch (msg.what) {
                 case 2:
                     Toast.makeText(SpendActivity.this, "添加成功", Toast.LENGTH_LONG).show();//信息框
+                    PencilFragment.setRecycer();
                     finish();
                     break;
                 case 20:
@@ -98,7 +99,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                 params.put("moneytypeid",spSpend.getSelectedItem().toString());
                 params.put("notestatus","1");
                 client.post("http://"+ IDHelper.IP+":8000/android_user/", params, new DjangoListener(this.handler, 2, 20));
-                PencilFragment.setRecycer();
+//                PencilFragment.setRecycer();
                 finish();
                 break;
             case R.id.button22:
@@ -113,7 +114,7 @@ public class SpendActivity extends AppCompatActivity implements View.OnClickList
                 params1.put("moneytypeid",spPencil.getSelectedItem().toString());
                 params1.put("notestatus","2");
                 client1.post("http://"+ IDHelper.IP+":8000/android_user/", params1, new DjangoListener(this.handler, 2, 20));
-                PencilFragment.setRecycer();
+//                PencilFragment.setRecycer();
                 finish();
                 break;
             case R.id.button23:
